@@ -6,13 +6,15 @@ import { useSelector } from 'react-redux';
  * Reads the current theme from Redux and adapts skeleton colors accordingly.
  */
 export const SkeletonWrapper = ({ children }) => {
-    const isDark = useSelector(state => state.theme?.isDark);
+    const mode = useSelector(state => state.theme?.mode);
+    const isDark = mode === 'dark';
 
     return (
         <SkeletonTheme
-            baseColor={isDark ? '#27272a' : '#e4e4e7'}
-            highlightColor={isDark ? '#3f3f46' : '#f4f4f5'}
+            baseColor={isDark ? '#111113' : '#f4f4f5'}
+            highlightColor={isDark ? '#1d1d21' : '#ffffff'}
             borderRadius="4px"
+            duration={2}
         >
             {children}
         </SkeletonTheme>
