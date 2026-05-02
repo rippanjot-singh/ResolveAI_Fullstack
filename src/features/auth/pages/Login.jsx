@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; // Assuming react-router is used
 import { useAuth } from '../hooks/useAuth';
+import constants from '../../../assets/constants';
 
 export const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +22,10 @@ export const Login = () => {
         <div className="min-h-screen w-full flex bg-background text-foreground font-sans">
 
             {/* Left Panel: Minimal Canvas (50%) */}
-            <div className="hidden lg:flex lg:w-1/2 bg-surface items-center justify-center p-12 border-r border-border">
+            <div 
+                className="hidden lg:flex lg:w-1/2 bg-surface bg-cover bg-center items-center justify-center p-12 border-r border-border"
+                style={{ backgroundImage: `url(${constants.AuthPhoto})` }}
+            >
             </div>
 
             {/* Right Panel: Form (50%) */}

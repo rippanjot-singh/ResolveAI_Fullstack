@@ -142,6 +142,38 @@ const Dashboard = () => {
                 </header>
 
                 <div className="p-8 mx-auto space-y-8">
+                    {/* Welcome Section for New Users */}
+                    {activeChatbots.length === 0 && (
+                        <div className="bg-primary/5 border border-primary/20 rounded-xl p-8 relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 p-8 text-primary/5 group-hover:text-primary/10 transition-colors">
+                                <Sparkles size={120} />
+                            </div>
+                            <div className="relative z-10 max-w-2xl space-y-4">
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider">
+                                    <Sparkles size={12} />
+                                    <span>Welcome to AI Studio</span>
+                                </div>
+                                <h2 className="text-3xl font-bold tracking-tight">Let's build your first AI Agent</h2>
+                                <p className="text-foreground/60 text-sm leading-relaxed">
+                                    Your dashboard is currently waiting for data. Start by creating an agent, training it with your knowledge, and embedding it on your site to see live analytics here.
+                                </p>
+                                <div className="flex items-center gap-4 pt-2">
+                                    <NavLink
+                                        to="/dashboard/studio/editor"
+                                        className="px-6 py-2.5 bg-primary text-white rounded font-medium text-sm hover:shadow-lg hover:shadow-primary/20 transition-all"
+                                    >
+                                        Create My First Agent
+                                    </NavLink>
+                                    <NavLink
+                                        to="/dashboard/knowledge"
+                                        className="px-6 py-2.5 bg-surface border border-border rounded font-medium text-sm hover:bg-surface/50 transition-all"
+                                    >
+                                        Setup Knowledge Base
+                                    </NavLink>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {/* KPI Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -149,26 +181,26 @@ const Dashboard = () => {
                             title="Open Tickets"
                             value={kpis.openTickets}
                             icon={Ticket}
-                            description="Requires attention"
+                            description={activeChatbots.length === 0 ? "Setup agents first" : "Requires attention"}
                         />
                         <KpiCard
                             title="High Priority"
                             value={kpis.highPriority}
                             icon={AlertCircle}
-                            className="text-red-500"
-                            description="Critical issues"
+                            className={kpis.highPriority > 0 ? "text-red-500" : ""}
+                            description={activeChatbots.length === 0 ? "No issues yet" : "Critical issues"}
                         />
                         <KpiCard
                             title="Active Bots"
                             value={kpis.activeChatbots}
                             icon={Bot}
-                            description="Live across domains"
+                            description={activeChatbots.length === 0 ? "Start creating now" : "Live across domains"}
                         />
                         <KpiCard
                             title="Total Leads"
                             value={kpis.totalLeads}
                             icon={Users}
-                            description="Collected via forms/bots"
+                            description={activeChatbots.length === 0 ? "Awaiting interactions" : "Collected via forms/bots"}
                         />
                     </div>
 
@@ -317,14 +349,16 @@ const Dashboard = () => {
 };
 
 const KpiCard = ({ title, value, icon: Icon, className = "", description }) => (
-    <div className="border border-border rounded p-5 bg-surface/30 flex flex-col gap-3">
-        <div className="flex items-center justify-between text-foreground/70">
-            <span className="text-sm font-medium">{title}</span>
-            <Icon size={18} className={className} />
+    <div className="bg-surface/10 backdrop-blur-md border border-border rounded p-6 flex items-center gap-5 group hover:border-primary/20 hover:bg-surface/20 transition-all cursor-default">
+        <div className={`w-12 h-12 rounded bg-foreground/5 flex items-center justify-center group-hover:scale-110 transition-transform ${className.includes('text-red') ? 'bg-red-500/10' : 'bg-primary/10'}`}>
+            <Icon size={22} className={className || 'text-primary'} />
         </div>
-        <div>
-            <div className={`text-3xl font-semibold tracking-tight ${className}`}>{value}</div>
-            <div className="text-xs text-foreground/50 mt-1">{description}</div>
+        <div className="space-y-0.5">
+            <p className="text-[10px] uppercase font-bold tracking-wider text-foreground/40">{title}</p>
+            <div className="flex items-baseline gap-2">
+                <span className="text-2xl font-bold tracking-tight">{value}</span>
+                <span className="text-[10px] text-foreground/30 font-medium truncate max-w-[100px]">{description}</span>
+            </div>
         </div>
     </div>
 );
