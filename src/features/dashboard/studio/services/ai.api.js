@@ -15,3 +15,11 @@ export const trainWithPDF = async (chatbotId, file) => {
     });
     return response.data;
 };
+
+export const askAI = async (chatbotId, message, history = []) => {
+    const response = await api.post(`/ai/ask/${chatbotId}`, { 
+        question: message,
+        history: history 
+    });
+    return response.data;
+};

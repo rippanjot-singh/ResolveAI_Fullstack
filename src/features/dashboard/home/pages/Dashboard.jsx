@@ -43,7 +43,7 @@ const Dashboard = () => {
 
     if (isLoading) {
         return (
-            <div className="flex h-screen w-full bg-background text-foreground overflow-hidden">
+            <div className="flex h-screen w-full bg-f text-foreground overflow-hidden">
                 <SideNav />
                 <main className="flex-1 overflow-y-auto">
                     <header className="sticky top-0 z-10 h-16 border-b border-border bg-background/80 backdrop-blur-sm flex items-center px-8">
