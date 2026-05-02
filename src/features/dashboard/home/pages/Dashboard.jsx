@@ -177,7 +177,7 @@ const Dashboard = () => {
                                         </thead>
                                         <tbody className="divide-y divide-border/50">
                                             {recentTickets.map(ticket => (
-                                                <tr key={ticket._id} className="group hover:bg-primary/[0.02] transition-colors cursor-pointer">
+                                                <tr key={ticket._id} className="group hover:bg-primary/2 transition-colors cursor-pointer">
                                                     <td className="px-6 py-4">
                                                         <div className="flex flex-col gap-0.5">
                                                             <span className="text-sm group-hover:text-primary transition-colors line-clamp-1">{ticket.inquiree || 'No subject'}</span>
