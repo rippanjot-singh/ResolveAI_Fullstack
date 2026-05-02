@@ -9,6 +9,7 @@ import {
     Edit
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
 
 const Agents = () => {
     const { chatbots, isLoading, error, handleToggleStatus, handleDelete } = useChatbots();
@@ -73,11 +74,29 @@ const Agents = () => {
 
                     {/* Agents Grid */}
                     {isLoading ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {[1, 2, 3].map(i => (
-                                <div key={i} className="h-48 border border-border rounded bg-surface/20 animate-pulse" />
-                            ))}
-                        </div>
+                        <SkeletonWrapper>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {[...Array(3)].map(i => (
+                                    <div key={i} className="border border-border rounded p-5 bg-background space-y-4">
+                                        <div className="flex items-center gap-3">
+                                            <Skeleton width={40} height={40} />
+                                            <div>
+                                                <Skeleton width={120} height={14} />
+                                                <Skeleton width={60} height={10} className="mt-1" />
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <Skeleton height={40} />
+                                            <Skeleton height={40} />
+                                        </div>
+                                        <div className="pt-4 border-t border-border/30 flex items-center justify-between">
+                                            <Skeleton width={80} height={14} />
+                                            <Skeleton width={90} height={14} />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </SkeletonWrapper>
                     ) : error ? (
                         <div className="p-8 text-center border border-dashed border-border rounded bg-surface/10">
                             <p className="text-sm text-red-500">{error}</p>

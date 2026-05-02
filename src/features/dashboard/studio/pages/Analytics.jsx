@@ -5,11 +5,8 @@ import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
     PieChart, Pie, Cell, Legend
 } from 'recharts';
-import { 
-    TrendingUp, MessageSquare, Users, Bot, 
-    Calendar, ChevronDown, RefreshCw, Info,
-    Smile, Frown, Meh, HelpCircle
-} from 'lucide-react';
+import { TrendingUp, MessageSquare, Users, Bot, RefreshCw, Info, Smile, Frown, Meh, HelpCircle } from 'lucide-react';
+import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
 
 const StatCard = ({ title, value, icon: Icon, trend, color = 'primary' }) => (
     <div className="bg-surface/30 border border-border rounded p-6 space-y-4">
@@ -92,32 +89,29 @@ const Analytics = () => {
                         
                         {/* KPI Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <StatCard 
-                                title="Total Chats" 
-                                value={data.stats.totalChats} 
-                                icon={Users} 
-                                trend={data.stats.chatTrend} 
-                            />
-                            <StatCard 
-                                title="Total Messages" 
-                                value={data.stats.totalMessages} 
-                                icon={MessageSquare} 
-                                trend={data.stats.messageTrend}
-                                color="amber" 
-                            />
-                            <StatCard 
-                                title="Active Agents" 
-                                value={data.stats.chatbotCount} 
-                                icon={Bot} 
-                                color="indigo" 
-                            />
-                            <StatCard 
-                                title="Avg. Resolution" 
-                                value={`${data.stats.resolutionRate}%`} 
-                                icon={TrendingUp} 
-                                trend={null}
-                                color="green" 
-                            />
+                            {loading ? (
+                                <SkeletonWrapper>
+                                    {[...Array(4)].map((_, i) => (
+                                        <div key={i} className="bg-surface/30 border border-border rounded p-6 space-y-4">
+                                            <div className="flex items-center justify-between">
+                                                <Skeleton width={36} height={36} />
+                                                <Skeleton width={40} height={14} />
+                                            </div>
+                                            <div>
+                                                <Skeleton width={80} height={10} />
+                                                <Skeleton width={60} height={28} className="mt-1" />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </SkeletonWrapper>
+                            ) : (
+                                <>
+                                    <StatCard title="Total Chats" value={data.stats.totalChats} icon={Users} trend={data.stats.chatTrend} />
+                                    <StatCard title="Total Messages" value={data.stats.totalMessages} icon={MessageSquare} trend={data.stats.messageTrend} color="amber" />
+                                    <StatCard title="Active Agents" value={data.stats.chatbotCount} icon={Bot} color="indigo" />
+                                    <StatCard title="Avg. Resolution" value={`${data.stats.resolutionRate ?? 100}%`} icon={TrendingUp} trend={null} color="green" />
+                                </>
+                            )}
                         </div>
 
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -133,9 +127,9 @@ const Analytics = () => {
                                         Live Trends
                                     </div>
                                 </div>
-                                <div className="h-[350px] w-full">
+                                <div className="h-[350px] w-full min-w-0">
                                     {data.dailyChats.length > 0 ? (
-                                        <ResponsiveContainer width="100%" height="100%">
+                                        <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                                             <AreaChart data={data.dailyChats}>
                                                 <defs>
                                                     <linearGradient id="colorChats" x1="0" y1="0" x2="0" y2="1">
@@ -193,8 +187,8 @@ const Analytics = () => {
                                     <h3 className="text-sm font-bold">User Sentiment</h3>
                                     <p className="text-xs text-foreground/40">Mood analysis of current interactions</p>
                                 </div>
-                                <div className="h-[250px] w-full relative">
-                                    <ResponsiveContainer width="100%" height="100%">
+                                <div className="h-[250px] w-full min-w-0 relative">
+                                    <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                                         <PieChart>
                                             <Pie
                                                 data={data.sentimentDistribution}

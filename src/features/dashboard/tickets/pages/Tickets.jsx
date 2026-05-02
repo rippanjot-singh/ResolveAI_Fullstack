@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SideNav from '../../../../shared/layout/SideNav';
 import { useTickets } from '../hooks/useTickets';
+import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
 import { 
     Ticket, Search, Clock, CheckCircle2
 } from 'lucide-react';
@@ -14,7 +15,7 @@ const PriorityBadge = ({ priority }) => {
     const style = colors[priority?.toLowerCase()] || 'bg-surface text-foreground/40 border-border';
 
     return (
-        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${style}`}>
+        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${style}`}>
             {priority || 'None'}
         </span>
     );
@@ -89,10 +90,32 @@ const Tickets = () => {
                 <div className="flex-1 overflow-y-auto p-8 scrollbar-hide">
                     <div className="max-w-7xl mx-auto">
                         {loading && tickets.length === 0 ? (
-                            <div className="h-64 flex flex-col items-center justify-center text-foreground/20 space-y-4">
-                                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded animate-spin"></div>
-                                <p className="text-sm italic">Loading tickets...</p>
-                            </div>
+                            <SkeletonWrapper>
+                                <div className="bg-surface/30 border border-border rounded overflow-hidden">
+                                    <table className="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr className="bg-surface/50 border-b border-border">
+                                                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Inquiry</th>
+                                                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Priority</th>
+                                                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Customer</th>
+                                                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Status</th>
+                                                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40 text-right">Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-border/50">
+                                            {[...Array(6)].map((_, i) => (
+                                                <tr key={i}>
+                                                    <td className="px-6 py-4"><Skeleton width={180} height={18} /></td>
+                                                    <td className="px-6 py-4"><Skeleton width={70} height={18} /></td>
+                                                    <td className="px-6 py-4"><Skeleton width={140} height={18} /></td>
+                                                    <td className="px-6 py-4"><Skeleton width={80} height={18} /></td>
+                                                    <td className="px-6 py-4 text-right"><Skeleton width={90} height={18} /></td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </SkeletonWrapper>
                         ) : filteredTickets.length > 0 ? (
                             <div className="bg-surface/30 border border-border rounded overflow-hidden">
                                 <table className="w-full text-left border-collapse">

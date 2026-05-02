@@ -6,6 +6,7 @@ import {
     CheckCircle2, Loader2, Info, Search, X as LucideX,
     ExternalLink, RefreshCw, LayoutGrid, List as ListIcon, Pencil, Link as LinkIcon
 } from 'lucide-react';
+import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
 
 const TreeNode = ({ node, selectedId, onSelect, depth = 0 }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -156,7 +157,25 @@ const Knowledge = () => {
                     <div className="max-w-6xl mx-auto space-y-8">
                         
                         {/* Status Card */}
-                        {!status.isConnected && (
+                        {loading && !status.isConnected ? (
+                            <SkeletonWrapper>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {[...Array(3)].map((_, i) => (
+                                        <div key={i} className="border border-border rounded p-5 bg-surface/30 space-y-3">
+                                            <div className="flex items-center gap-3">
+                                                <Skeleton width={32} height={32} />
+                                                <Skeleton width={140} height={16} />
+                                            </div>
+                                            <Skeleton height={40} />
+                                            <div className="flex gap-2 pt-2">
+                                                <Skeleton width={60} height={28} />
+                                                <Skeleton width={60} height={28} />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </SkeletonWrapper>
+                        ) : !status.isConnected ? (
                             <div className="p-12 border border-dashed border-border rounded bg-surface/20 flex flex-col items-center text-center space-y-4">
                                 <div className="w-16 h-16 rounded bg-surface flex items-center justify-center border border-border">
                                     <Database size={32} className="text-foreground/20" />
@@ -174,7 +193,7 @@ const Knowledge = () => {
                                     Get Started with Notion
                                 </button>
                             </div>
-                        )}
+                        ) : null}
 
                         {status.isConnected && (
                             <div className="space-y-6">
