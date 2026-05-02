@@ -1,8 +1,21 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; // Assuming react-router is used
+import { useAuth } from '../hooks/useAuth';
 
 export const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const { login, loading, error } = useAuth();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await login({ email, password });
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     return (
         <div className="min-h-screen w-full flex bg-background text-foreground font-sans">
@@ -25,7 +38,8 @@ export const Login = () => {
 
                     <div className="space-y-6">
                         {/* Form */}
-                        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                        <form className="space-y-4" onSubmit={handleSubmit}>
+                            {error && <div className="text-red-500 text-sm">{error}</div>}
                             <div className="space-y-1.5">
                                 <label htmlFor="email" className="text-sm font-medium">
                                     Email
@@ -33,6 +47,8 @@ export const Login = () => {
                                 <input
                                     id="email"
                                     type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     placeholder="name@example.com"
                                     className="w-full rounded border border-border bg-transparent px-3 py-2 text-sm outline-none focus:border-primary transition-colors"
                                     required
@@ -47,6 +63,8 @@ export const Login = () => {
                                     <input
                                         id="password"
                                         type={showPassword ? "text" : "password"}
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
                                         placeholder="••••••••"
                                         className="w-full rounded border border-border bg-transparent px-3 py-2 pr-10 text-sm outline-none focus:border-primary transition-colors"
                                         required
@@ -68,9 +86,10 @@ export const Login = () => {
 
                             <button
                                 type="submit"
-                                className="w-full rounded bg-foreground text-background py-2.5 text-sm font-medium hover:opacity-90 transition-opacity mt-2"
+                                disabled={loading}
+                                className="w-full rounded bg-foreground text-background py-2.5 text-sm font-medium hover:opacity-90 transition-opacity mt-2 disabled:opacity-50"
                             >
-                                Log in
+                                {loading ? 'Logging in...' : 'Log in'}
                             </button>
                         </form>
 

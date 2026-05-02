@@ -1,9 +1,24 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 
 export const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [companyName, setCompanyName] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { signup, loading, error } = useAuth();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+        await signup({ companyName, name, email, password });
+    } catch (err) {
+        console.error(err);
+    }
+  };
 
   return (
     <div className="min-h-screen w-full flex bg-background text-foreground font-sans">
@@ -26,7 +41,8 @@ export const SignUp = () => {
 
           <div className="space-y-6">
             {/* Form */}
-            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              {error && <div className="text-red-500 text-sm">{error}</div>}
               <div className="space-y-1.5">
                 <label htmlFor="companyName" className="text-sm font-medium">
                   Company Name
@@ -34,6 +50,8 @@ export const SignUp = () => {
                 <input
                   id="companyName"
                   type="text"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
                   placeholder="ABC Company"
                   className="w-full rounded border border-border bg-transparent px-3 py-2 text-sm outline-none focus:border-primary transition-colors"
                   required
@@ -46,6 +64,8 @@ export const SignUp = () => {
                 <input
                   id="name"
                   type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   placeholder="John Doe"
                   className="w-full rounded border border-border bg-transparent px-3 py-2 text-sm outline-none focus:border-primary transition-colors"
                   required
@@ -59,6 +79,8 @@ export const SignUp = () => {
                 <input
                   id="email"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
                   className="w-full rounded border border-border bg-transparent px-3 py-2 text-sm outline-none focus:border-primary transition-colors"
                   required
@@ -73,6 +95,8 @@ export const SignUp = () => {
                   <input
                     id="password"
                     type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
                     className="w-full rounded border border-border bg-transparent px-3 py-2 pr-10 text-sm outline-none focus:border-primary transition-colors"
                     required
@@ -94,9 +118,10 @@ export const SignUp = () => {
 
               <button
                 type="submit"
-                className="w-full rounded bg-foreground text-background py-2.5 text-sm font-medium hover:opacity-90 transition-opacity mt-2"
+                disabled={loading}
+                className="w-full rounded bg-foreground text-background py-2.5 text-sm font-medium hover:opacity-90 transition-opacity mt-2 disabled:opacity-50"
               >
-                Sign up
+                {loading ? 'Signing up...' : 'Sign up'}
               </button>
             </form>
 
