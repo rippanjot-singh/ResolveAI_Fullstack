@@ -487,7 +487,7 @@ const CreateAgent = () => {
 
                                         {/* Add Page Modal */}
                                         {isAddingPage && (
-                                            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+                                            <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
                                                 <div className="bg-background border border-border rounded shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
                                                     <div className="p-6 border-b border-border flex items-center justify-between">
                                                         <div>

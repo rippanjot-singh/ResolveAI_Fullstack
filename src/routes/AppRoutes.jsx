@@ -7,6 +7,9 @@ import ProtectedRoute from './ProtectedRoute'
 import Dashboard from '../features/dashboard/home/pages/Dashboard'
 import Agents from '../features/dashboard/studio/pages/Agents'
 import CreateAgent from '../features/dashboard/studio/pages/CreateAgent'
+import Analytics from '../features/dashboard/studio/pages/Analytics'
+import Knowledge from '../features/dashboard/knowledge/pages/Knowledge'
+import Tickets from '../features/dashboard/tickets/pages/Tickets'
 
 const AppRoutes = () => {
 
@@ -25,9 +28,12 @@ const AppRoutes = () => {
         <Route path="studio">
           <Route index element={<Agents />} />
           <Route path="agents" element={<Agents />} />
+          <Route path="analytics" element={<Analytics />} />
           <Route path="editor" element={<CreateAgent />} />
           <Route path="editor/:id" element={<CreateAgent />} />
         </Route>
+        <Route path="knowledge" element={<Knowledge />} />
+        <Route path="tickets" element={<Tickets />} />
       </Route>
     </Routes>
   )

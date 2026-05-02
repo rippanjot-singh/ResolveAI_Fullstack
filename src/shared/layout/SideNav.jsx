@@ -3,7 +3,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
     ChevronRight, ChevronLeft, ChevronsUpDown, SquareTerminal,
     Bot, BookOpen, Settings2, Moon, Sun, PanelLeftClose, PanelLeftOpen, LogOut, Settings,
-    LayoutDashboard, FileText, Tag, Users, Mail
+    LayoutDashboard, FileText, Tag, Users, Mail,
 } from 'lucide-react';
 import constants from '../../assets/constants';
 import { useAuth } from '../../features/auth/hooks/useAuth';
@@ -23,6 +23,7 @@ const PLATFORM_LINKS = [
             { title: 'Agents', path: '/dashboard/studio/agents' },
             { title: 'Analytics', path: '/dashboard/studio/analytics' },
             { title: 'Playground', path: '/dashboard/studio/playground' },
+            { title: 'Chats', path: '/dashboard/studio/chats' },
         ]
     },
     {
@@ -42,6 +43,11 @@ const PLATFORM_LINKS = [
             { title: 'All Tickets', path: '/dashboard/tickets' },
             { title: 'Focus Area', path: '/dashboard/tickets/focus-area' },
         ]
+    },
+    {
+        title: 'Knowledge Base',
+        icon: BookOpen,
+        path: '/dashboard/knowledge',
     },
     {
         title: 'Leads',
@@ -183,7 +189,7 @@ const SideNav = () => {
                     <div className="flex items-center gap-1 shrink-0">
                         <button
                             onClick={toggleTheme}
-                            className="p-1.5 rounded hover:bg-surface text-foreground/70 hover:text-foreground transition-colors cursor-pointer"
+                            className="p-1.5 rounded-full hover:bg-surface text-foreground/70 hover:text-foreground transition-colors cursor-pointer"
                             title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
                         >
                             {isDark ? <Sun size={16} /> : <Moon size={16} />}
