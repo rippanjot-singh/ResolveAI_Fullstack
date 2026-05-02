@@ -2,7 +2,11 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import SideNav from '../../../../shared/layout/SideNav';
 import { useDashboardStats } from '../hooks/useDashboardStats';
-import { Ticket, AlertCircle, Bot, Users, Activity, ExternalLink, FileText, Clock, CheckCircle2 } from 'lucide-react';
+import { 
+    Ticket, AlertCircle, Bot, Users, Activity, ExternalLink, FileText, 
+    Clock, CheckCircle2, Zap, ShieldCheck, Cpu, MessageSquare, Globe,
+    ChevronRight, Sparkles
+} from 'lucide-react';
 import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
 
 const PriorityBadge = ({ priority }) => {
@@ -13,7 +17,7 @@ const PriorityBadge = ({ priority }) => {
     };
     const style = colors[priority?.toLowerCase()] || 'bg-surface text-foreground/40 border-border';
     return (
-        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${style}`}>
+        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${style}`}>
             {priority || 'None'}
         </span>
     );
@@ -59,15 +63,35 @@ const Dashboard = () => {
                                     </div>
                                 ))}
                             </div>
-                            <div className="border border-border rounded overflow-hidden bg-surface/30">
-                                {[...Array(5)].map((_, i) => (
-                                    <div key={i} className="flex items-center gap-4 px-4 py-3 border-b border-border">
-                                        <Skeleton width={80} height={14} />
-                                        <Skeleton width={200} height={14} />
-                                        <Skeleton width={70} height={20} />
-                                        <Skeleton width={30} height={14} className="ml-auto" />
+                            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                                <div className="lg:col-span-3 border border-border rounded overflow-hidden bg-surface/30">
+                                    {[...Array(10)].map((_, i) => (
+                                        <div key={i} className="flex items-center gap-4 px-6 py-4 border-b border-border last:border-0">
+                                            <Skeleton width={120} height={14} />
+                                            <Skeleton width={60} height={18} />
+                                            <Skeleton width={100} height={14} />
+                                            <Skeleton width={80} height={14} className="ml-auto" />
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="lg:col-span-2 space-y-6">
+                                    <div className="border border-border rounded p-5 bg-surface/30 space-y-4">
+                                        <Skeleton width={100} height={14} />
+                                        <Skeleton width={200} height={40} />
+                                        <Skeleton width="100%" height={8} />
                                     </div>
-                                ))}
+                                    <div className="border border-border rounded overflow-hidden bg-surface/30">
+                                        {[...Array(3)].map((_, i) => (
+                                            <div key={i} className="px-4 py-3 border-b border-border last:border-0 flex items-center gap-3">
+                                                <Skeleton circle width={32} height={32} />
+                                                <div className="space-y-2">
+                                                    <Skeleton width={80} height={12} />
+                                                    <Skeleton width={120} height={10} />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
                         </SkeletonWrapper>
                     </div>
@@ -89,7 +113,7 @@ const Dashboard = () => {
 
     if (!data) return null;
 
-    const { kpis, recentTickets } = data;
+    const { kpis, recentTickets, activeChatbots = [], recentInteractions = [] } = data;
 
     return (
         <div className="flex h-screen w-full bg-background text-foreground overflow-hidden">
@@ -149,38 +173,38 @@ const Dashboard = () => {
                     </div>
 
                     {/* Main Content Grid */}
-                    <div className="grid grid-cols-1 gap-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
 
-                        {/* Triage Table */}
-                        <div className="space-y-4">
+                        {/* Left Side: Needs Attention (3/5 width) */}
+                        <div className="lg:col-span-3 space-y-4">
                             <div className="flex items-center justify-between">
                                 <h2 className="text-base font-medium flex items-center gap-2">
                                     <Activity size={18} className="text-foreground/70" />
                                     Needs Attention
                                 </h2>
-                                <NavLink to="/dashboard/tickets" className="text-sm text-primary hover:underline">
-                                    View all
+                                <NavLink to="/dashboard/tickets" className="text-sm text-primary hover:underline flex items-center gap-1">
+                                    <span>View all</span>
+                                    <ChevronRight size={14} />
                                 </NavLink>
                             </div>
 
-                            <div className="bg-surface/30 border border-border rounded overflow-hidden">
+                            <div className="bg-surface/10 backdrop-blur-md border border-border rounded overflow-hidden">
                                 {recentTickets && recentTickets.length > 0 ? (
                                     <table className="w-full text-left border-collapse">
                                         <thead>
-                                            <tr className="bg-surface/50 border-b border-border">
+                                            <tr className="bg-foreground/2 border-b border-border">
                                                 <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Inquiry</th>
                                                 <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Priority</th>
                                                 <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Customer</th>
-                                                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Status</th>
                                                 <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40 text-right">Date</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-border/50">
                                             {recentTickets.map(ticket => (
-                                                <tr key={ticket._id} className="group hover:bg-primary/2 transition-colors cursor-pointer">
+                                                <tr key={ticket._id} className="group hover:bg-primary/2 transition-colors cursor-pointer" onClick={() => window.location.href = `/dashboard/tickets/${ticket._id}`}>
                                                     <td className="px-6 py-4">
                                                         <div className="flex flex-col gap-0.5">
-                                                            <span className="text-sm group-hover:text-primary transition-colors line-clamp-1">{ticket.inquiree || 'No subject'}</span>
+                                                            <span className="text-sm group-hover:text-primary transition-colors line-clamp-1 font-medium">{ticket.inquiree || 'No subject'}</span>
                                                             <span className="text-[11px] text-foreground/40 flex items-center gap-1">
                                                                 <Ticket size={10} />
                                                                 {ticket.type || 'manual'}
@@ -192,12 +216,9 @@ const Dashboard = () => {
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         <div className="flex flex-col">
-                                                            <span className="text-xs font-medium">{ticket.name}</span>
+                                                            <span className="text-xs font-medium text-foreground/80">{ticket.name}</span>
                                                             <span className="text-[10px] text-foreground/30">{ticket.email}</span>
                                                         </div>
-                                                    </td>
-                                                    <td className="px-6 py-4">
-                                                        <StatusBadge status={ticket.status} />
                                                     </td>
                                                     <td className="px-6 py-4 text-right">
                                                         <span className="text-[11px] text-foreground/30 font-medium whitespace-nowrap">
@@ -216,6 +237,73 @@ const Dashboard = () => {
                                         No open tickets right now.
                                     </div>
                                 )}
+                            </div>
+                        </div>
+
+                        {/* Right Side: System Intelligence (2/5 width) */}
+                        <div className="lg:col-span-2 space-y-6">
+                            <div className="flex items-center justify-between">
+                                <h2 className="text-base font-medium flex items-center gap-2">
+                                    <Zap size={18} className="text-primary" />
+                                    System Intelligence
+                                </h2>
+                            </div>
+
+                            <div className="space-y-6">
+                                {/* AI Performance Quick Look */}
+                                <div className="bg-primary/5 border border-primary/20 rounded p-5 relative overflow-hidden group">
+                                    <div className="absolute -right-4 -top-4 text-primary/10 group-hover:scale-110 transition-transform">
+                                    </div>
+                                    <div className="relative z-10 space-y-3">
+                                        <div className="flex items-center gap-2 text-primary">
+                                            <Zap size={16} />
+                                            <span className="text-xs font-bold uppercase tracking-widest">AI Performance</span>
+                                        </div>
+                                        <div className="flex items-end gap-3">
+                                            <div className="text-3xl font-bold tracking-tight">84%</div>
+                                            <div className="text-xs text-foreground/50 mb-1">Resolution Rate</div>
+                                        </div>
+                                        <div className="w-full h-1.5 bg-primary/10 rounded-full overflow-hidden">
+                                            <div className="h-full bg-primary w-[84%] rounded-full shadow-[0_0_8px_rgba(var(--color-primary-rgb),0.5)]"></div>
+                                        </div>
+                                        <p className="text-[10px] text-foreground/50">AI is handling 84% of inquiries without human intervention.</p>
+                                    </div>
+                                </div>
+
+                                {/* Active Agents List */}
+                                <div className="bg-surface/10 backdrop-blur-md border border-border rounded overflow-hidden">
+                                    <div className="px-4 py-3 border-b border-border bg-foreground/2 flex items-center justify-between">
+                                        <span className="text-[10px] font-bold uppercase tracking-wider text-foreground/40 flex items-center gap-2">
+                                            <Cpu size={12} />
+                                            Active Agents
+                                        </span>
+                                        <span className="text-[10px] font-medium text-primary">{activeChatbots.length} Live</span>
+                                    </div>
+                                    <div className="divide-y divide-border/50">
+                                        {activeChatbots.length > 0 ? activeChatbots.map(bot => (
+                                            <div key={bot._id} className="px-4 py-3 flex items-center justify-between group hover:bg-surface/50 transition-colors">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded bg-background border border-border flex items-center justify-center text-primary group-hover:border-primary/30 transition-colors">
+                                                        <Bot size={16} />
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-xs font-medium">{bot.name}</span>
+                                                        <span className="text-[10px] text-foreground/40 flex items-center gap-1">
+                                                            <Globe size={10} />
+                                                            {bot.verifiedDomains?.[0] || 'Embedded'}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-1.5">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                                                    <span className="text-[10px] font-medium text-foreground/40 uppercase tracking-tighter">Live</span>
+                                                </div>
+                                            </div>
+                                        )) : (
+                                            <div className="px-4 py-6 text-center text-[11px] text-foreground/40">No active agents</div>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

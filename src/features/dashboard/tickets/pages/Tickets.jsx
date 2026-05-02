@@ -94,7 +94,7 @@ const Tickets = () => {
                                 <div className="bg-surface/30 border border-border rounded overflow-hidden">
                                     <table className="w-full text-left border-collapse">
                                         <thead>
-                                            <tr className="bg-surface/50 border-b border-border">
+                                            <tr className="bg-foreground/2 border-b border-border">
                                                 <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Inquiry</th>
                                                 <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Priority</th>
                                                 <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Customer</th>
@@ -117,10 +117,10 @@ const Tickets = () => {
                                 </div>
                             </SkeletonWrapper>
                         ) : filteredTickets.length > 0 ? (
-                            <div className="bg-surface/30 border border-border rounded overflow-hidden">
+                            <div className="bg-surface/10 backdrop-blur-md border border-border rounded overflow-hidden">
                                 <table className="w-full text-left border-collapse">
                                     <thead>
-                                        <tr className="bg-surface/50 border-b border-border">
+                                        <tr className="bg-foreground/2 border-b border-border">
                                             <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Inquiry</th>
                                             <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Priority</th>
                                             <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Customer</th>
