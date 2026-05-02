@@ -34,3 +34,11 @@
   --color-surface: var(--theme-surface);
   --color-border: var(--theme-border);
 }
+
+@utility scrollbar-hide {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

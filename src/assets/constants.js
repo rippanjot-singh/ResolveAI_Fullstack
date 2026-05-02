@@ -1,5 +1,8 @@
+import logo from './logo.png'
+
 const constants = {
-    name : "ResolveAI"
+    name: "ResolveAI",
+    logo: logo
 }
 
 export default constants;

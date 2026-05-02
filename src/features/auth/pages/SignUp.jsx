@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { useSelector } from 'react-redux';
 
 export const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
