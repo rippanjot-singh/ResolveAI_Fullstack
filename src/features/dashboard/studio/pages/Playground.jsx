@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import SideNav from '../../../../shared/layout/SideNav';
 import { usePlayground } from '../hooks/usePlayground';
 import { 
@@ -52,11 +53,10 @@ const Playground = () => {
 
             <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
                 <header className="min-h-16 border-b border-border bg-background/80 backdrop-blur-sm flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 sm:px-8 py-4 sm:py-0 shrink-0 z-10 gap-4">
-                    <div className="flex items-center gap-4">
-                        <div>
-                            <h1 className="text-lg font-bold">AI Playground</h1>
-                            <p className="text-xs text-foreground/40">Test and refine your agent's behavior</p>
-                        </div>
+                    <div className="flex items-center gap-2 overflow-hidden">
+                        <NavLink to="/dashboard/studio/agents" className="text-sm text-foreground/40 hover:text-foreground transition-colors font-medium whitespace-nowrap">Agents</NavLink>
+                        <ChevronRight size={16} className="text-foreground/20 shrink-0" />
+                        <span className="text-sm text-foreground font-medium truncate">{'Playground'}</span>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
