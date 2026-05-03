@@ -21,6 +21,7 @@ import Emails from '../features/dashboard/email/pages/Emails'
 import SettingsLayout from '../features/dashboard/settings/layout/SettingsLayout'
 import AccountSettings from '../features/dashboard/settings/pages/AccountSettings'
 import InviteMember from '../features/dashboard/settings/pages/InviteMember'
+import Home from '../features/landing/home/pages/Home'
 
 const AppRoutes = () => {
 
@@ -32,6 +33,7 @@ const AppRoutes = () => {
 
   return (
     <Routes>
+      <Route path='/' element={<Home />}/>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path='/dashboard' element={<ProtectedRoute />} >
@@ -40,6 +42,7 @@ const AppRoutes = () => {
           <Route index element={<Agents />} />
           <Route path="agents" element={<Agents />} />
           <Route path="analytics" element={<Analytics />} />
+          <Route path="analytics/:id" element={<Analytics />} />
           <Route path="playground" element={<Playground />} />
           <Route path="chats" element={<Chats />} />
           <Route path="editor" element={<CreateAgent />} />
@@ -55,6 +58,7 @@ const AppRoutes = () => {
           <Route path="create" element={<CreateForm />} />
           <Route path="edit/:id" element={<CreateForm />} />
           <Route path="results" element={<Results />} />
+          <Route path="results/:id" element={<Results />} />
         </Route>
         <Route path="leads" element={<Leads />} />
         <Route path="email" element={<Emails />} />

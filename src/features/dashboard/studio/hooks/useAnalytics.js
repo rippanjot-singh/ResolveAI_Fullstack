@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import * as analyticsApi from '../services/analytics.api';
 import { toast } from 'react-hot-toast';
 
-export const useAnalytics = (initialTimeframe = '7d') => {
+export const useAnalytics = (initialTimeframe = '7d', chatbotId = null) => {
     const [loading, setLoading] = useState(false);
     const [timeframe, setTimeframe] = useState(initialTimeframe);
     const [data, setData] = useState({
@@ -18,7 +18,7 @@ export const useAnalytics = (initialTimeframe = '7d') => {
     const fetchAnalytics = useCallback(async (selectedTimeframe) => {
         setLoading(true);
         try {
-            const res = await analyticsApi.getAnalytics(selectedTimeframe || timeframe);
+            const res = await analyticsApi.getAnalytics(selectedTimeframe || timeframe, chatbotId);
             if (res.success) {
                 setData(res.data);
             }
@@ -28,7 +28,7 @@ export const useAnalytics = (initialTimeframe = '7d') => {
         } finally {
             setLoading(false);
         }
-    }, [timeframe]);
+    }, [timeframe, chatbotId]);
 
     useEffect(() => {
         fetchAnalytics(timeframe);

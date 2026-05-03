@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { useParams, NavLink } from 'react-router-dom';
 import SideNav from '../../../../shared/layout/SideNav';
 import { useAnalytics } from '../hooks/useAnalytics';
 import { 
-    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
     PieChart, Pie, Cell, Legend
 } from 'recharts';
-import { TrendingUp, MessageSquare, Users, Bot, RefreshCw, Info, Smile, Frown, Meh, HelpCircle } from 'lucide-react';
+import { TrendingUp, MessageSquare, Users, Bot, RefreshCw, Info, Smile, Frown, Meh, HelpCircle, ArrowLeft } from 'lucide-react';
 import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
 
 const StatCard = ({ title, value, icon: Icon, trend, color = 'primary' }) => {
@@ -50,7 +51,8 @@ const SentimentIcon = ({ sentiment }) => {
 };
 
 const Analytics = () => {
-    const { loading, timeframe, setTimeframe, data, refresh } = useAnalytics();
+    const { id } = useParams();
+    const { loading, timeframe, setTimeframe, data, refresh } = useAnalytics('7d', id);
 
     const COLORS = {
         positive: '#22c55e',
@@ -59,11 +61,25 @@ const Analytics = () => {
         unknown: '#94a3b8'
     };
 
+    const LINE_COLORS = [
+        '#6366f1', // Indigo (Primary)
+        '#8b5cf6', // Violet
+        '#3b82f6', // Blue
+        '#06b6d4', // Cyan
+        '#7c3aed', // Purple
+        '#2dd4bf', // Teal
+    ];
+
     const timeframeLabels = {
         '24h': 'Last 24 Hours',
         '7d': 'Last 7 Days',
         '30d': 'Last 30 Days'
     };
+
+    // Get bot names from data (keys in dailyChats excluding 'date' and 'total')
+    const bots = data.dailyChats.length > 0 
+        ? Object.keys(data.dailyChats[0]).filter(k => k !== 'date' && k !== 'total')
+        : [];
 
     return (
         <div className="flex h-screen w-full bg-background text-foreground overflow-hidden">
@@ -71,9 +87,20 @@ const Analytics = () => {
 
             <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
                 <header className="h-16 border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-8 shrink-0 z-10 gap-4">
-                    <div className="min-w-0 flex-1">
-                        <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold truncate">Studio Analytics</h1>
-                        <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40 truncate">Monitor AI behavior and interaction trends</p>
+                    <div className="min-w-0 flex-1 flex items-center gap-4">
+                        {id && (
+                            <NavLink to="/dashboard/studio/analytics" className="p-2 hover:bg-surface rounded transition-colors text-foreground/40 hover:text-foreground">
+                                <ArrowLeft size={18} />
+                            </NavLink>
+                        )}
+                        <div>
+                            <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold truncate">
+                                {id ? `${bots[0] || 'Agent'} Analytics` : 'Studio Analytics'}
+                            </h1>
+                            <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40 truncate">
+                                {id ? 'Individual performance metrics' : 'Monitor AI behavior across all agents'}
+                            </p>
+                        </div>
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
                         <div className="flex items-center gap-1 bg-surface border border-border rounded p-1">
@@ -128,24 +155,32 @@ const Analytics = () => {
                             <div className="lg:col-span-2 bg-surface/30 border border-border rounded p-6 flex flex-col">
                                 <div className="flex items-center justify-between mb-8">
                                     <div>
-                                        <h3 className="text-sm font-bold">Daily Interactions</h3>
-                                        <p className="text-xs text-foreground/40">Conversation volume over {timeframeLabels[timeframe]}</p>
+                                        <h3 className="text-sm font-bold">Interactions Breakdown</h3>
+                                        <p className="text-xs text-foreground/40">
+                                            {id ? 'Daily volume for this agent' : 'Comparative volume across all agents'}
+                                        </p>
                                     </div>
-                                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/5 px-2 py-1 rounded">
-                                        <div className="w-2 h-2 rounded bg-primary animate-pulse"></div>
-                                        Live Trends
+                                    <div className="flex items-center gap-4">
+                                        {!id && (
+                                            <div className="hidden sm:flex items-center gap-3">
+                                                {bots.map((bot, i) => (
+                                                    <div key={bot} className="flex items-center gap-1.5">
+                                                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: LINE_COLORS[i % LINE_COLORS.length] }}></div>
+                                                        <span className="text-[10px] font-bold text-foreground/40 uppercase">{bot}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/5 px-2 py-1 rounded">
+                                            <div className="w-2 h-2 rounded bg-primary animate-pulse"></div>
+                                            Live Trends
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="h-[350px] w-full min-w-0">
                                     {data.dailyChats.length > 0 ? (
                                         <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-                                            <AreaChart data={data.dailyChats}>
-                                                <defs>
-                                                    <linearGradient id="colorChats" x1="0" y1="0" x2="0" y2="1">
-                                                        <stop offset="5%" stopColor="var(--color-primary)" stopOpacity={0.3}/>
-                                                        <stop offset="95%" stopColor="var(--color-primary)" stopOpacity={0}/>
-                                                    </linearGradient>
-                                                </defs>
+                                            <LineChart data={data.dailyChats}>
                                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" opacity={0.5} />
                                                 <XAxis 
                                                     dataKey="date" 
@@ -157,9 +192,7 @@ const Analytics = () => {
                                                         try {
                                                             const date = new Date(str);
                                                             return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                                                        } catch (e) {
-                                                            return str;
-                                                        }
+                                                        } catch (e) { return str; }
                                                     }}
                                                 />
                                                 <YAxis 
@@ -170,17 +203,31 @@ const Analytics = () => {
                                                 />
                                                 <Tooltip 
                                                     contentStyle={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: '8px', fontSize: '12px' }}
-                                                    itemStyle={{ color: 'var(--color-primary)' }}
+                                                    itemSorter={(item) => -item.value}
                                                 />
-                                                <Area 
-                                                    type="monotone" 
-                                                    dataKey="chats" 
-                                                    stroke="var(--color-primary)" 
-                                                    strokeWidth={2}
-                                                    fillOpacity={1} 
-                                                    fill="url(#colorChats)" 
-                                                />
-                                            </AreaChart>
+                                                {id ? (
+                                                    <Line 
+                                                        type="monotone" 
+                                                        dataKey={bots[0]} 
+                                                        stroke="var(--color-primary)" 
+                                                        strokeWidth={3}
+                                                        dot={false}
+                                                        activeDot={{ r: 6, strokeWidth: 0 }}
+                                                    />
+                                                ) : (
+                                                    bots.map((bot, i) => (
+                                                        <Line 
+                                                            key={bot}
+                                                            type="monotone" 
+                                                            dataKey={bot} 
+                                                            stroke={LINE_COLORS[i % LINE_COLORS.length]} 
+                                                            strokeWidth={2}
+                                                            dot={false}
+                                                            activeDot={{ r: 4, strokeWidth: 0 }}
+                                                        />
+                                                    ))
+                                                )}
+                                            </LineChart>
                                         </ResponsiveContainer>
                                     ) : (
                                         <div className="h-full flex flex-col items-center justify-center text-foreground/20 italic text-sm">

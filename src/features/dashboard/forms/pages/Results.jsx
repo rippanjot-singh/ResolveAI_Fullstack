@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, NavLink } from 'react-router-dom';
 import SideNav from '../../../../shared/layout/SideNav';
 import { useFormResults } from '../hooks/useFormResults';
 import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
-import { Download, FileText, Filter, Calendar, X, Globe, User, Hash } from 'lucide-react';
+import { Download, FileText, Filter, Calendar, X, Globe, User, Hash, ArrowLeft } from 'lucide-react';
 
 const SubmissionDetailsModal = ({ isOpen, onClose, result }) => {
     if (!isOpen || !result) return null;
@@ -101,6 +102,7 @@ const SubmissionDetailsModal = ({ isOpen, onClose, result }) => {
 };
 
 const Results = () => {
+    const { id } = useParams();
     const { results, isLoading, fetchResults } = useFormResults();
     const [filterForm, setFilterForm] = useState('All Forms');
     const [currentPage, setCurrentPage] = useState(1);
@@ -117,6 +119,9 @@ const Results = () => {
 
     // Apply filters
     const filteredResults = results.filter(result => {
+        if (id) {
+            return result.formId?._id === id;
+        }
         if (filterForm === 'All Forms') return true;
         return result.formId?.name === filterForm;
     });
@@ -124,7 +129,7 @@ const Results = () => {
     // Reset pagination on filter change
     useEffect(() => {
         setCurrentPage(1);
-    }, [filterForm]);
+    }, [filterForm, id]);
 
     // Pagination
     const totalPages = Math.ceil(filteredResults.length / ITEMS_PER_PAGE);
@@ -162,9 +167,20 @@ const Results = () => {
 
             <main className="flex-1 flex flex-col min-w-0 overflow-y-auto custom-scrollbar">
                 <header className="sticky top-0 z-10 min-h-[clamp(3.5rem,8vh,4rem)] border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-[clamp(1rem,4vw,2rem)] py-2 gap-4">
-                    <div className="min-w-0 flex-1">
-                        <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold truncate">Form Results</h1>
-                        <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40 truncate">View and export all form submissions</p>
+                    <div className="min-w-0 flex-1 flex items-center gap-4">
+                        {id && (
+                            <NavLink to="/dashboard/forms/results" className="p-2 hover:bg-surface rounded transition-colors text-foreground/40 hover:text-foreground">
+                                <ArrowLeft size={18} />
+                            </NavLink>
+                        )}
+                        <div>
+                            <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold truncate">
+                                {id ? `${filteredResults[0]?.formId?.name || 'Form'} Submissions` : 'Form Results'}
+                            </h1>
+                            <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40 truncate">
+                                {id ? 'Detailed submission breakdown' : 'View and export all form submissions'}
+                            </p>
+                        </div>
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
                         <div className="flex items-center gap-1 bg-surface border border-border rounded p-1 sm:flex">
