@@ -25,12 +25,14 @@ export const usePlayground = () => {
         setLoading(true);
         try {
             const response = await getMyChatbots();
-            const bots = response.chatbots || [];
-            setChatbots(bots);
-            if (bots.length > 0) {
-                // Try to select the master bot by default
-                const masterBot = bots.find(b => b.isMaster);
-                selectBot(masterBot || bots[0]);
+            if (response.success) {
+                const bots = response.chatbots || response.data || [];
+                setChatbots(bots);
+                if (bots.length > 0) {
+                    // Try to select the master bot by default
+                    const masterBot = bots.find(b => b.isMaster);
+                    selectBot(masterBot || bots[0]);
+                }
             }
         } catch (error) {
             toast.error('Failed to fetch chatbots');

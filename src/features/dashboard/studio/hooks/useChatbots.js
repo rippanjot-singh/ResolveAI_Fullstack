@@ -42,8 +42,6 @@ export const useChatbots = () => {
     };
 
     const handleDelete = async (id) => {
-        if (!window.confirm("Are you sure you want to delete this chatbot?")) return;
-        
         try {
             const response = await chatbotApi.deleteChatbot(id);
             if (response.success) {

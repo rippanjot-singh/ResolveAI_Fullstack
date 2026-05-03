@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import * as chatbotApi from '../services/chatbot.api';
 import * as aiApi from '../services/ai.api';
+import toast from 'react-hot-toast';
 
 export const useAgentEditor = () => {
     const { id } = useParams();
@@ -41,7 +42,8 @@ export const useAgentEditor = () => {
         faq: [],
         position: 'bottom-right',
         verifiedDomains: [],
-        restrictedDomains: []
+        restrictedDomains: [],
+        isMaster: false
     });
 
     useEffect(() => {
@@ -122,6 +124,34 @@ export const useAgentEditor = () => {
         }
     };
 
+    const handleSetMaster = async () => {
+        if (!isEditing || !formData._id) {
+            toast.error('Please save the agent first');
+            return;
+        }
+
+        try {
+            // Fetch bots to check for existing master
+            const response = await chatbotApi.getMyChatbots();
+            const chatbots = response.chatbots || response.data || [];
+            const currentMaster = chatbots.find(b => b.isMaster);
+
+            if (currentMaster && currentMaster._id !== formData._id) {
+                const confirmReplacement = window.confirm(
+                    `"${currentMaster.name}" is currently set as your Master Agent.\n\nSetting "${formData.name}" as the new Master will immediately change the AI's prompt and knowledge for all automated Email and Form responses.\n\nDo you want to proceed?`
+                );
+                if (!confirmReplacement) return;
+            }
+
+            await chatbotApi.setMasterChatbot(formData._id);
+            setFormData(prev => ({ ...prev, isMaster: true }));
+            toast.success(`${formData.name} is now the Master Agent`);
+        } catch (error) {
+            console.error('Master set error:', error);
+            toast.error('Failed to set master agent');
+        }
+    };
+
     return {
         formData,
         setFormData,
@@ -131,6 +161,7 @@ export const useAgentEditor = () => {
         error,
         handleSave,
         handleTrainWebsite,
-        handleTrainPDF
+        handleTrainPDF,
+        handleSetMaster
     };
 };

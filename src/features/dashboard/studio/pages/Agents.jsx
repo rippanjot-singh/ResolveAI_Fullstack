@@ -73,8 +73,8 @@ const Agents = () => {
                     {isLoading ? (
                         <SkeletonWrapper>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {[...Array(3)].map(i => (
-                                    <div key={i} className="border border-border rounded p-5 bg-background space-y-4">
+                                {[...Array(3)].map((_, index) => (
+                                    <div key={index} className="border border-border rounded p-5 bg-background space-y-4">
                                         <div className="flex items-center gap-3">
                                             <Skeleton width={40} height={40} />
                                             <div>

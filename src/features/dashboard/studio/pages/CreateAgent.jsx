@@ -7,7 +7,7 @@ import {
     ChevronRight, ChevronDown, Save, Info, Palette,
     Database, Link as LinkIcon, Globe as GlobeIcon, FileText,
     Plus, Trash2, Sliders, CheckCircle2, AlertCircle, Loader2, Upload, X as LucideX,
-    ChevronLeft, ExternalLink
+    ChevronLeft, ExternalLink, Shield
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import * as notionApi from '../services/notion.api';
@@ -66,7 +66,7 @@ const CreateAgent = () => {
     const [activeTab, setActiveTab] = useState('general');
     const {
         formData, setFormData, isLoading, isSaving, isEditing, error,
-        handleSave, handleTrainWebsite, handleTrainPDF
+        handleSave, handleTrainWebsite, handleTrainPDF, handleSetMaster
     } = useAgentEditor();
 
     const [websiteUrl, setWebsiteUrl] = useState('');
@@ -292,6 +292,18 @@ const CreateAgent = () => {
                             <ChevronLeft size={16} />
                             <span>Get back to Agents</span>
                         </NavLink>
+                        {isEditing && (
+                            <button
+                                onClick={handleSetMaster}
+                                className={`flex items-center gap-2 px-4 py-2 rounded text-sm font-medium transition-all ${formData.isMaster
+                                    ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.1)]'
+                                    : 'bg-surface border border-border text-foreground/60 hover:text-foreground hover:bg-surface/80'
+                                    }`}
+                            >
+                                <Shield size={16} className={formData.isMaster ? 'fill-current' : ''} />
+                                <span>{formData.isMaster ? 'Master Agent' : 'Set as Master'}</span>
+                            </button>
+                        )}
                         <button
                             onClick={handleSaveAgent}
                             disabled={isSaving}
