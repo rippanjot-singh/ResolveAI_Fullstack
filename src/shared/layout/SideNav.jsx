@@ -245,6 +245,7 @@ const SideNav = () => {
                                                     <NavLink
                                                         key={child.title}
                                                         to={child.path}
+                                                        end={child.path === item.path}
                                                         className={({ isActive }) =>
                                                             `px-2 py-1.5 text-sm rounded transition-colors ${isActive ? 'bg-surface text-foreground font-medium' : 'text-foreground/90 hover:text-foreground hover:bg-surface'}`
                                                         }

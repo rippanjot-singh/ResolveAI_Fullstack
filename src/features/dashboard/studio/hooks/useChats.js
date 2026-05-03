@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getAllChats, getChatInteractions } from '../services/chat.api';
+import { useSocket } from '../../../../context/SocketContext';
 import { toast } from 'react-hot-toast';
 
 export const useChats = () => {
@@ -8,10 +9,22 @@ export const useChats = () => {
     const [selectedChat, setSelectedChat] = useState(null);
     const [interactions, setInteractions] = useState([]);
     const [interactionsLoading, setInteractionsLoading] = useState(false);
+    const socket = useSocket();
 
     useEffect(() => {
         fetchChats();
     }, []);
+
+    useEffect(() => {
+        if (!socket) return;
+
+        const handleNewChat = (newChat) => {
+            setChats(prev => [newChat, ...prev]);
+        };
+
+        socket.on('new_chat', handleNewChat);
+        return () => socket.off('new_chat', handleNewChat);
+    }, [socket]);
 
     const fetchChats = async () => {
         setLoading(true);

@@ -15,6 +15,11 @@ export const getFormResults = async (formId) => {
     return response.data;
 };
 
+export const getAllFormResults = async () => {
+    const response = await api.get('/form/results/all');
+    return response.data;
+};
+
 export const toggleFormStatus = async (formId) => {
     const response = await api.put(`/form/${formId}/toggle`);
     return response.data;

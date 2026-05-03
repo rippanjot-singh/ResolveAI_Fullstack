@@ -8,25 +8,37 @@ import {
 import { TrendingUp, MessageSquare, Users, Bot, RefreshCw, Info, Smile, Frown, Meh, HelpCircle } from 'lucide-react';
 import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
 
-const StatCard = ({ title, value, icon: Icon, trend, color = 'primary' }) => (
-    <div className="bg-surface/30 border border-border rounded p-6 space-y-4">
-        <div className="flex items-center justify-between">
-            <div className={`p-2 rounded bg-${color}/10 text-${color}`}>
-                <Icon size={20} />
+const StatCard = ({ title, value, icon: Icon, trend, color = 'primary' }) => {
+    const colorMap = {
+        primary: 'bg-primary/10 text-primary',
+        amber: 'bg-amber-500/10 text-amber-500',
+        indigo: 'bg-indigo-500/10 text-indigo-500',
+        green: 'bg-green-500/10 text-green-500'
+    };
+    const iconStyle = colorMap[color] || colorMap.primary;
+
+    return (
+        <div className="bg-surface/10 backdrop-blur-md border border-border rounded p-6 flex flex-col justify-center relative group hover:border-primary/20 transition-all h-full">
+            <div className="flex items-center gap-5">
+                <div className={`w-12 h-12 shrink-0 rounded flex items-center justify-center group-hover:scale-110 transition-transform ${iconStyle}`}>
+                    <Icon size={24} />
+                </div>
+                <div className="space-y-1">
+                    <p className="text-[10px] uppercase font-bold tracking-wider text-foreground/40">{title}</p>
+                    <p className="text-2xl font-bold">{value}</p>
+                </div>
             </div>
-            {trend && (
-                <div className={`text-xs font-medium ${trend > 0 ? 'text-green-500' : 'text-red-500'} flex items-center gap-1`}>
-                    {trend > 0 ? '+' : ''}{trend}%
-                    <TrendingUp size={12} className={trend < 0 ? 'rotate-180' : ''} />
+            {trend !== undefined && trend !== null && (
+                <div className="absolute top-6 right-6">
+                    <div className={`text-[10px] font-bold px-2 py-1 rounded border ${trend > 0 ? 'bg-green-500/10 text-green-500 border-green-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20'} flex items-center gap-1`}>
+                        {trend > 0 ? '+' : ''}{trend}%
+                        <TrendingUp size={10} className={trend < 0 ? 'rotate-180' : ''} />
+                    </div>
                 </div>
             )}
         </div>
-        <div>
-            <p className="text-xs text-foreground/40 font-medium uppercase tracking-wider">{title}</p>
-            <h3 className="text-2xl font-bold mt-1">{value}</h3>
-        </div>
-    </div>
-);
+    );
+};
 
 const SentimentIcon = ({ sentiment }) => {
     switch (sentiment?.toLowerCase()) {
@@ -58,12 +70,12 @@ const Analytics = () => {
             <SideNav />
 
             <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
-                <header className="h-16 border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-8 shrink-0 z-10">
-                    <div>
-                        <h1 className="text-lg font-bold">Studio Analytics</h1>
-                        <p className="text-xs text-foreground/40">Monitor AI behavior and interaction trends</p>
+                <header className="h-16 border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-8 shrink-0 z-10 gap-4">
+                    <div className="min-w-0 flex-1">
+                        <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold truncate">Studio Analytics</h1>
+                        <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40 truncate">Monitor AI behavior and interaction trends</p>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 shrink-0">
                         <div className="flex items-center gap-1 bg-surface border border-border rounded p-1">
                             {Object.entries(timeframeLabels).map(([key, label]) => (
                                 <button
@@ -92,14 +104,11 @@ const Analytics = () => {
                             {loading ? (
                                 <SkeletonWrapper>
                                     {[...Array(4)].map((_, i) => (
-                                        <div key={i} className="bg-surface/30 border border-border rounded p-6 space-y-4">
-                                            <div className="flex items-center justify-between">
-                                                <Skeleton width={36} height={36} />
-                                                <Skeleton width={40} height={14} />
-                                            </div>
-                                            <div>
-                                                <Skeleton width={80} height={10} />
-                                                <Skeleton width={60} height={28} className="mt-1" />
+                                        <div key={i} className="bg-surface/10 backdrop-blur-md border border-border rounded p-6 flex items-center gap-5">
+                                            <Skeleton width={48} height={48} />
+                                            <div className="space-y-1">
+                                                <Skeleton width={80} height={12} />
+                                                <Skeleton width={60} height={24} />
                                             </div>
                                         </div>
                                     ))}

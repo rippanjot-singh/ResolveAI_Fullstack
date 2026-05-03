@@ -78,12 +78,12 @@ const FormsList = () => {
             <SideNav />
 
             <main className="flex-1 overflow-y-auto relative">
-                <header className="sticky top-0 z-10 min-h-[clamp(3.5rem,8vh,4rem)] border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-[clamp(1rem,4vw,2rem)] py-2">
-                    <div>
-                        <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold">Forms List</h1>
-                        <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40">Manage your dynamic forms and view submissions from embedded widgets</p>
+                <header className="sticky top-0 z-10 min-h-[clamp(3.5rem,8vh,4rem)] border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-[clamp(1rem,4vw,2rem)] py-2 gap-4">
+                    <div className="min-w-0 flex-1">
+                        <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold truncate">Forms List</h1>
+                        <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40 truncate">Manage your dynamic forms and view submissions from embedded widgets</p>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 shrink-0">
                         <NavLink
                             to="/dashboard/forms/create"
                             className="flex items-center gap-2 px-[clamp(0.5rem,2vw,1rem)] py-2 bg-primary text-white rounded text-[clamp(0.75rem,2vw,0.875rem)] font-medium hover:bg-primary/90 transition-colors shadow-sm"

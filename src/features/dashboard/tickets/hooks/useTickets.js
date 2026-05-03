@@ -41,6 +41,26 @@ export const useTickets = () => {
         }
     };
 
+    const bulkDelete = async (ticketIds) => {
+        try {
+            await ticketsApi.bulkDeleteTickets(ticketIds);
+            toast.success('Selected tickets deleted');
+            await fetchTickets();
+        } catch (err) {
+            toast.error('Failed to delete selected tickets');
+        }
+    };
+
+    const addTicket = async (data) => {
+        try {
+            await ticketsApi.createTicket(data);
+            toast.success('Ticket created successfully');
+            await fetchTickets();
+        } catch (err) {
+            toast.error('Failed to create ticket');
+        }
+    };
+
     useEffect(() => {
         fetchTickets();
     }, []);
@@ -51,6 +71,8 @@ export const useTickets = () => {
         error,
         fetchTickets,
         resolveTicket,
-        deleteTicket
+        deleteTicket,
+        bulkDelete,
+        addTicket
     };
 };

@@ -21,16 +21,22 @@ const Chats = () => {
     } = useChats();
 
     const [popoverId, setPopoverId] = React.useState(null);
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const ITEMS_PER_PAGE = 10;
+
+    const totalPages = Math.ceil(chats.length / ITEMS_PER_PAGE);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const paginatedChats = chats.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
     return (
         <div className="flex h-screen w-full bg-background text-foreground overflow-hidden" onClick={() => setPopoverId(null)}>
             <SideNav />
 
             <main className="flex-1 flex flex-col min-w-0 overflow-y-auto custom-scrollbar">
-                <header className="sticky top-0 z-10 min-h-[clamp(3.5rem,8vh,4rem)] border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-[clamp(1rem,4vw,2rem)] py-2">
-                    <div>
-                        <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold">Studio Chats</h1>
-                        <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40">Monitor live conversations and agent performance</p>
+                <header className="sticky top-0 z-10 min-h-[clamp(3.5rem,8vh,4rem)] border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-[clamp(1rem,4vw,2rem)] py-2 gap-4">
+                    <div className="min-w-0 flex-1">
+                        <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold truncate">Studio Chats</h1>
+                        <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40 truncate">Monitor live conversations and agent performance</p>
                     </div>
                 </header>
 
@@ -92,7 +98,7 @@ const Chats = () => {
                                             </td>
                                         </tr>
                                     ) : (
-                                        chats.map((chat) => (
+                                        paginatedChats.map((chat) => (
                                             <tr 
                                                 key={chat._id} 
                                                 className="hover:bg-surface/5 transition-colors cursor-pointer group"
@@ -181,7 +187,31 @@ const Chats = () => {
                                     )}
                                 </tbody>
                             </table>
-                    </div>
+                            {chats.length > 0 && (
+                                <div className="p-4 border-t border-border/50 flex items-center justify-between">
+                                    <span className="text-[10px] uppercase font-bold tracking-wider text-foreground/40">
+                                        Showing {startIndex + 1}-{Math.min(startIndex + ITEMS_PER_PAGE, chats.length)} of {chats.length}
+                                    </span>
+                                    <div className="flex items-center gap-2">
+                                        <button 
+                                            disabled={currentPage === 1} 
+                                            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                                            className="px-3 py-1.5 rounded text-[10px] font-bold uppercase tracking-wider bg-surface border border-border disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface/70 transition-all text-foreground cursor-pointer"
+                                        >
+                                            Prev
+                                        </button>
+                                        <span className="text-xs font-bold text-foreground/60 w-8 text-center">{currentPage}</span>
+                                        <button 
+                                            disabled={currentPage >= totalPages} 
+                                            onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                                            className="px-3 py-1.5 rounded text-[10px] font-bold uppercase tracking-wider bg-surface border border-border disabled:opacity-50 disabled:cursor-not-allowed hover:bg-surface/70 transition-all text-foreground cursor-pointer"
+                                        >
+                                            Next
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                 </div>
             </div>
 

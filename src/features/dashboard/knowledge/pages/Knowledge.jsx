@@ -127,12 +127,12 @@ const Knowledge = () => {
             <SideNav />
 
             <main className="flex-1 flex flex-col min-w-0">
-                <header className="h-16 border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-8 shrink-0">
-                    <div>
-                        <h1 className="text-lg font-bold">Company Knowledge</h1>
-                        <p className="text-xs text-foreground/40">Manage shared information and dynamic tools for your AI</p>
+                <header className="h-16 border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-8 shrink-0 gap-4">
+                    <div className="min-w-0 flex-1">
+                        <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold truncate">Company Knowledge</h1>
+                        <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40 truncate">Manage shared information and dynamic tools for your AI</p>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 shrink-0">
                         {!status.isConnected ? (
                             <button
                                 onClick={connectNotion}

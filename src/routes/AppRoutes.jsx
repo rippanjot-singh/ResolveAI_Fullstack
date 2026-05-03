@@ -14,6 +14,8 @@ import Knowledge from '../features/dashboard/knowledge/pages/Knowledge'
 import Tickets from '../features/dashboard/tickets/pages/Tickets'
 import FormsList from '../features/dashboard/forms/pages/Forms'
 import CreateForm from '../features/dashboard/forms/pages/CreateForm'
+import Results from '../features/dashboard/forms/pages/Results'
+import Leads from '../features/dashboard/leads/pages/Leads'
 
 const AppRoutes = () => {
 
@@ -44,7 +46,9 @@ const AppRoutes = () => {
           <Route index element={<FormsList />} />
           <Route path="create" element={<CreateForm />} />
           <Route path="edit/:id" element={<CreateForm />} />
+          <Route path="results" element={<Results />} />
         </Route>
+        <Route path="leads" element={<Leads />} />
       </Route>
     </Routes>
   )

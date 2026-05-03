@@ -24,3 +24,8 @@ export const deleteTicket = async (ticketId) => {
     const response = await api.delete(`/ticket/delete/${ticketId}`);
     return response.data;
 };
+
+export const bulkDeleteTickets = async (ticketIds) => {
+    const response = await api.post("/ticket/bulk-delete", { ticketIds });
+    return response.data;
+};
