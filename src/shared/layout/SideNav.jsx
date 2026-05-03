@@ -188,7 +188,7 @@ const SideNav = () => {
                     <img src={constants.logo} alt="" className='w-4.5' />
                     {!isCollapsed && (
                         <div className="flex flex-col cursor-pointer">
-                            <span className="text-sm font-semibold truncate text-foreground leading-tight">{user?.companyId.name}</span>
+                            <span className="text-sm font-semibold truncate text-foreground leading-tight">{user?.companyId?.name}</span>
                             <span className="text-xs text-foreground/60 truncate leading-tight">{user?.role}</span>
                         </div>
                     )}
