@@ -3,7 +3,7 @@ import SideNav from '../../../../shared/layout/SideNav';
 import { useChats } from '../hooks/useChats';
 import { 
     MessageSquare, User, Bot, Calendar, ChevronRight, 
-    X, ArrowUpRight, MessageCircle, Users, Zap, Eye, Mail
+    X, ArrowUpRight, MessageCircle, Users, Zap, Eye, Mail, RefreshCw
 } from 'lucide-react';
 import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
 import ReactMarkdown from 'react-markdown';
@@ -16,6 +16,7 @@ const Chats = () => {
         interactions, 
         interactionsLoading, 
         stats, 
+        fetchChats,
         fetchInteractions, 
         closeChat 
     } = useChats();
@@ -37,6 +38,15 @@ const Chats = () => {
                     <div className="min-w-0 flex-1">
                         <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold truncate">Studio Chats</h1>
                         <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40 truncate">Monitor live conversations and agent performance</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <button 
+                            onClick={fetchChats}
+                            className="p-2 hover:bg-surface rounded transition-colors text-foreground/40 hover:text-foreground"
+                            title="Reload Chats"
+                        >
+                            <RefreshCw size={18} className={loading ? 'animate-spin' : ''} />
+                        </button>
                     </div>
                 </header>
 

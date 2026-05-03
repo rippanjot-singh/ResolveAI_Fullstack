@@ -65,6 +65,7 @@ export const useChats = () => {
         interactions,
         interactionsLoading,
         stats,
+        fetchChats,
         fetchInteractions,
         closeChat: () => {
             setSelectedChat(null);

@@ -3,7 +3,7 @@ import { useParams, NavLink } from 'react-router-dom';
 import SideNav from '../../../../shared/layout/SideNav';
 import { useFormResults } from '../hooks/useFormResults';
 import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
-import { Download, FileText, Filter, Calendar, X, Globe, User, Hash, ArrowLeft } from 'lucide-react';
+import { Download, FileText, Filter, Calendar, X, Globe, User, Hash, ArrowLeft, RefreshCw } from 'lucide-react';
 
 const SubmissionDetailsModal = ({ isOpen, onClose, result }) => {
     if (!isOpen || !result) return null;
@@ -183,6 +183,13 @@ const Results = () => {
                         </div>
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
+                        <button 
+                            onClick={fetchResults}
+                            className="p-2 hover:bg-surface rounded transition-colors text-foreground/40 hover:text-foreground"
+                            title="Reload Results"
+                        >
+                            <RefreshCw size={18} className={isLoading ? 'animate-spin' : ''} />
+                        </button>
                         <div className="flex items-center gap-1 bg-surface border border-border rounded p-1 sm:flex">
                             <div className="flex items-center gap-2 px-3 py-1.5">
                                 <Filter size={14} className="text-foreground/40" />

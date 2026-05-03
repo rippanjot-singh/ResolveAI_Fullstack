@@ -4,7 +4,7 @@ import { useTickets } from '../hooks/useTickets';
 import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
 import { DeleteConfirmModal } from '../../../../shared/components/ui/DeleteConfirmModal';
 import { 
-    Ticket, Search, Clock, CheckCircle2, AlertCircle, X, Send, User, Mail, Tag, ChevronRight, Plus, Trash2
+    Ticket, Search, Clock, CheckCircle2, AlertCircle, X, Send, User, Mail, Tag, ChevronRight, Plus, Trash2, RefreshCw
 } from 'lucide-react';
 
 const StatCard = ({ title, value, icon: Icon, loading }) => (
@@ -317,7 +317,7 @@ const CreateTicketModal = ({ isOpen, onClose, onCreate }) => {
 };
 
 const Tickets = () => {
-    const { tickets, loading, resolveTicket, addTicket, bulkDelete } = useTickets();
+    const { tickets, loading, resolveTicket, addTicket, bulkDelete, fetchTickets } = useTickets();
     const [selectedTicket, setSelectedTicket] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -381,10 +381,19 @@ const Tickets = () => {
             <SideNav />
 
             <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
-                <header className="sticky top-0 z-10 h-16 border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-8 shrink-0gap-4">
-                    <div className="min-w-0 flex-1">
-                        <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold truncate">Support Tickets</h1>
-                        <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40 truncate">Real-time customer inquiries</p>
+                <header className="sticky top-0 z-10 h-16 border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-8 shrink-0 gap-4">
+                    <div className="min-w-0 flex-1 flex items-center gap-4">
+                        <div>
+                            <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold truncate">Support Tickets</h1>
+                            <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40 truncate">Real-time customer inquiries</p>
+                        </div>
+                        <button 
+                            onClick={fetchTickets}
+                            className="p-2 hover:bg-surface rounded transition-colors text-foreground/40 hover:text-foreground ml-2"
+                            title="Reload Tickets"
+                        >
+                            <RefreshCw size={18} className={loading ? 'animate-spin' : ''} />
+                        </button>
                     </div>
                     <div className="flex items-center gap-4 shrink-0">
                         {selectedIds.length > 0 && (

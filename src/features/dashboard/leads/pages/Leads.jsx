@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SideNav from '../../../../shared/layout/SideNav';
 import { useLeads } from '../hooks/useLeads';
 import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
-import { User, Mail, Calendar, Trash2, Search, ExternalLink, Filter, TrendingUp, Users, Clock, X, Info, Download } from 'lucide-react';
+import { User, Mail, Calendar, Trash2, Search, ExternalLink, Filter, TrendingUp, Users, Clock, X, Info, Download, RefreshCw } from 'lucide-react';
 import { DeleteConfirmModal } from '../../../../shared/components/ui/DeleteConfirmModal';
 
 const LeadDetailsModal = ({ isOpen, onClose, lead }) => {
@@ -74,7 +74,7 @@ const StatCard = ({ title, value, icon: Icon, loading }) => (
 );
 
 const Leads = () => {
-    const { leads, isLoading, removeLead, stats } = useLeads();
+    const { leads, isLoading, removeLead, stats, fetchLeads } = useLeads();
     const [searchQuery, setSearchQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -134,9 +134,18 @@ const Leads = () => {
 
             <main className="flex-1 flex flex-col min-w-0 overflow-y-auto custom-scrollbar">
                 <header className="sticky top-0 z-10 min-h-[clamp(3.5rem,8vh,4rem)] border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-[clamp(1rem,4vw,2rem)] py-2 gap-4">
-                    <div className="min-w-0 flex-1">
-                        <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold truncate">Captured Leads</h1>
-                        <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40 truncate">Manage your potential customers and contacts</p>
+                    <div className="min-w-0 flex-1 flex items-center gap-4">
+                        <div>
+                            <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold truncate">Captured Leads</h1>
+                            <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40 truncate">Manage your potential customers and contacts</p>
+                        </div>
+                        <button 
+                            onClick={fetchLeads}
+                            className="p-2 hover:bg-surface rounded transition-colors text-foreground/40 hover:text-foreground ml-2"
+                            title="Reload Leads"
+                        >
+                            <RefreshCw size={18} className={isLoading ? 'animate-spin' : ''} />
+                        </button>
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
                         <div className="relative group hidden sm:block">
