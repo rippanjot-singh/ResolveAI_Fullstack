@@ -10,11 +10,13 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
+import { DeleteConfirmModal } from '../../../../shared/components/ui/DeleteConfirmModal';
 
 const Agents = () => {
     const { chatbots, isLoading, error, handleToggleStatus, handleDelete } = useChatbots();
     const [selectedBotForCode, setSelectedBotForCode] = React.useState(null);
     const [searchTerm, setSearchTerm] = React.useState('');
+    const [botToDelete, setBotToDelete] = React.useState(null);
 
     const filteredChatbots = React.useMemo(() => {
         if (!chatbots) return [];
@@ -34,29 +36,24 @@ const Agents = () => {
             <SideNav />
 
             <main className="flex-1 overflow-y-auto">
-                <header className="sticky top-0 z-10 h-16 border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-8">
-                    <div className="flex items-center gap-2">
-                        <h1 className="text-lg font-medium text-foreground">Studio</h1>
-                        <ChevronRight size={16} className="text-foreground/40" />
-                        <span className="text-sm text-foreground/60 font-medium">Agents</span>
+                <header className="sticky top-0 z-10 min-h-[clamp(3.5rem,8vh,4rem)] border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-[clamp(1rem,4vw,2rem)] py-2">
+                    <div>
+                        <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold">Studio Agents</h1>
+                        <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40">Manage your deployed AI chatbots and their performance across domains</p>
                     </div>
                     <div className="flex items-center gap-3">
                         <NavLink
                             to="/dashboard/studio/editor"
-                            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm"
+                            className="flex items-center gap-2 px-[clamp(0.5rem,2vw,1rem)] py-2 bg-primary text-white rounded text-[clamp(0.75rem,2vw,0.875rem)] font-medium hover:bg-primary/90 transition-colors shadow-sm"
                         >
                             <Plus size={16} />
-                            <span>New Agent</span>
+                            <span className="hidden sm:inline">New Agent</span>
                         </NavLink>
                     </div>
                 </header>
 
-                <div className="p-8 max-w-7xl mx-auto space-y-8">
-                    {/* Page Header */}
-                    <div className="space-y-1">
-                        <h2 className="text-2xl font-semibold tracking-tight">AI Agents</h2>
-                        <p className="text-sm text-foreground/50">Manage your deployed AI chatbots and their performance across domains.</p>
-                    </div>
+                <div className="p-[clamp(1rem,4vw,2rem)] max-w-7xl mx-auto space-y-[clamp(1rem,4vw,2rem)]">
+
 
                     {/* Filters & Search Placeholder */}
                     <div className="flex items-center justify-between gap-4">
@@ -127,13 +124,13 @@ const Agents = () => {
                             )}
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-[repeat(auto-fill,minmax(clamp(280px,30vw,400px),1fr))] gap-[clamp(1rem,3vw,1.5rem)]">
                             {filteredChatbots.map(bot => (
                                 <AgentCard
                                     key={bot._id}
                                     bot={bot}
                                     onToggle={() => handleToggleStatus(bot._id)}
-                                    onDelete={() => handleDelete(bot._id)}
+                                    onDelete={() => setBotToDelete(bot)}
                                     onShowCode={() => setSelectedBotForCode(bot)}
                                 />
                             ))}
@@ -203,6 +200,18 @@ const Agents = () => {
                         </div>
                     </div>
                 )}
+
+                <DeleteConfirmModal 
+                    isOpen={!!botToDelete}
+                    onClose={() => setBotToDelete(null)}
+                    onConfirm={async () => {
+                        await handleDelete(botToDelete._id);
+                        setBotToDelete(null);
+                    }}
+                    title="Delete Agent"
+                    itemName={botToDelete?.name}
+                    message="This action will permanently remove the AI configuration and all associated chat history. This cannot be undone."
+                />
             </main>
         </div>
     );

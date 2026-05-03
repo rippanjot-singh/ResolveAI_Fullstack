@@ -31,7 +31,7 @@ const PLATFORM_LINKS = [
         icon: FileText,
         path: '/dashboard/forms',
         children: [
-            { title: 'Forms', path: '/dashboard/forms' },
+            { title: 'All Forms', path: '/dashboard/forms' },
             { title: 'Results', path: '/dashboard/forms/results' },
         ]
     },

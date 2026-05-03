@@ -12,6 +12,8 @@ import Playground from '../features/dashboard/studio/pages/Playground'
 import Chats from '../features/dashboard/studio/pages/Chats'
 import Knowledge from '../features/dashboard/knowledge/pages/Knowledge'
 import Tickets from '../features/dashboard/tickets/pages/Tickets'
+import FormsList from '../features/dashboard/forms/pages/Forms'
+import CreateForm from '../features/dashboard/forms/pages/CreateForm'
 
 const AppRoutes = () => {
 
@@ -38,6 +40,11 @@ const AppRoutes = () => {
         </Route>
         <Route path="knowledge" element={<Knowledge />} />
         <Route path="tickets" element={<Tickets />} />
+        <Route path="forms">
+          <Route index element={<FormsList />} />
+          <Route path="create" element={<CreateForm />} />
+          <Route path="edit/:id" element={<CreateForm />} />
+        </Route>
       </Route>
     </Routes>
   )

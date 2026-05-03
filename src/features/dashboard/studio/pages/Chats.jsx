@@ -27,14 +27,14 @@ const Chats = () => {
             <SideNav />
 
             <main className="flex-1 flex flex-col min-w-0 overflow-y-auto custom-scrollbar">
-                <header className="sticky top-0 z-10 h-16 border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-8">
+                <header className="sticky top-0 z-10 min-h-[clamp(3.5rem,8vh,4rem)] border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-[clamp(1rem,4vw,2rem)] py-2">
                     <div>
-                        <h1 className="text-lg font-bold">Studio Chats</h1>
-                        <p className="text-xs text-foreground/40">Monitor live conversations and agent performance</p>
+                        <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold">Studio Chats</h1>
+                        <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40">Monitor live conversations and agent performance</p>
                     </div>
                 </header>
 
-                <div className="p-8 space-y-8">
+                <div className="p-[clamp(1rem,4vw,2rem)] space-y-[clamp(1rem,4vw,2rem)] max-w-7xl mx-auto w-full">
                     {/* Stats Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <StatCard 
@@ -63,14 +63,14 @@ const Chats = () => {
                             <h3 className="text-sm font-semibold">Recent Conversations</h3>
                         </div>
                         
-                        <div className="bg-surface/10 backdrop-blur-md border border-border rounded relative z-10">
-                            <table className="w-full text-left">
+                        <div className="bg-surface/10 backdrop-blur-md border border-border rounded relative z-10 overflow-x-auto w-full">
+                            <table className="w-full text-left min-w-[300px]">
                                 <thead>
                                     <tr className="border-b border-border bg-surface/5">
                                         <th className="px-6 py-3 text-[10px] uppercase font-bold tracking-wider text-foreground/40">User</th>
-                                        <th className="px-6 py-3 text-[10px] uppercase font-bold tracking-wider text-foreground/40">Agent</th>
-                                        <th className="px-6 py-3 text-[10px] uppercase font-bold tracking-wider text-foreground/40 text-center">Messages</th>
-                                        <th className="px-6 py-3 text-[10px] uppercase font-bold tracking-wider text-foreground/40">Date</th>
+                                        <th className="hidden md:table-cell px-6 py-3 text-[10px] uppercase font-bold tracking-wider text-foreground/40">Agent</th>
+                                        <th className="hidden md:table-cell px-6 py-3 text-[10px] uppercase font-bold tracking-wider text-foreground/40 text-center">Messages</th>
+                                        <th className="hidden md:table-cell px-6 py-3 text-[10px] uppercase font-bold tracking-wider text-foreground/40">Date</th>
                                         <th className="px-6 py-3 text-[10px] uppercase font-bold tracking-wider text-foreground/40 text-right">Action</th>
                                     </tr>
                                 </thead>
@@ -79,9 +79,9 @@ const Chats = () => {
                                         [...Array(5)].map((_, i) => (
                                             <tr key={i}>
                                                 <td className="px-6 py-4"><Skeleton width={120} height={16} /></td>
-                                                <td className="px-6 py-4"><Skeleton width={100} height={16} /></td>
-                                                <td className="px-6 py-4 text-center"><Skeleton width={30} height={16} className="mx-auto" /></td>
-                                                <td className="px-6 py-4"><Skeleton width={80} height={16} /></td>
+                                                <td className="hidden md:table-cell px-6 py-4"><Skeleton width={100} height={16} /></td>
+                                                <td className="hidden md:table-cell px-6 py-4 text-center"><Skeleton width={30} height={16} className="mx-auto" /></td>
+                                                <td className="hidden md:table-cell px-6 py-4"><Skeleton width={80} height={16} /></td>
                                                 <td className="px-6 py-4 text-right"><Skeleton width={24} height={24} className="ml-auto" /></td>
                                             </tr>
                                         ))
@@ -98,27 +98,27 @@ const Chats = () => {
                                                 className="hover:bg-surface/5 transition-colors cursor-pointer group"
                                                 onClick={() => fetchInteractions(chat)}
                                             >
-                                                <td className="px-6 py-4">
+                                                <td className="px-6 py-4 max-w-[200px]">
                                                     <div className="flex items-center gap-3">
-                                                        <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary">
+                                                        <div className="w-8 h-8 shrink-0 rounded bg-primary/10 flex items-center justify-center text-primary">
                                                             <User size={14} />
                                                         </div>
-                                                        <div>
-                                                            <p className="text-sm font-medium">{chat.name || 'Anonymous Guest'}</p>
-                                                            <p className="text-[10px] text-foreground/40">{chat.email || 'No email provided'}</p>
+                                                        <div className="min-w-0 flex-1">
+                                                            <p className="text-sm font-medium truncate">{chat.name || 'Anonymous Guest'}</p>
+                                                            <p className="text-[10px] text-foreground/40 truncate">{chat.email || 'No email provided'}</p>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4">
+                                                <td className="hidden md:table-cell px-6 py-4">
                                                     <div className="flex items-center gap-2 text-xs">
                                                         <Bot size={14} className="text-primary/60" />
                                                         <span>{chat.chatbotId?.name || 'Unknown Agent'}</span>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4 text-center text-xs font-medium">
+                                                <td className="hidden md:table-cell px-6 py-4 text-center text-xs font-medium">
                                                     {chat.interactionCount}
                                                 </td>
-                                                <td className="px-6 py-4">
+                                                <td className="hidden md:table-cell px-6 py-4">
                                                     <div className="flex items-center gap-2 text-[11px] text-foreground/60">
                                                         <Calendar size={12} />
                                                         <span>{new Date(chat.createdAt).toLocaleDateString()}</span>
