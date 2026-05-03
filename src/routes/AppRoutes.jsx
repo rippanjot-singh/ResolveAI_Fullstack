@@ -12,6 +12,7 @@ import Playground from '../features/dashboard/studio/pages/Playground'
 import Chats from '../features/dashboard/studio/pages/Chats'
 import Knowledge from '../features/dashboard/knowledge/pages/Knowledge'
 import Tickets from '../features/dashboard/tickets/pages/Tickets'
+import FocusArea from '../features/dashboard/tickets/pages/FocusArea'
 import FormsList from '../features/dashboard/forms/pages/Forms'
 import CreateForm from '../features/dashboard/forms/pages/CreateForm'
 import Results from '../features/dashboard/forms/pages/Results'
@@ -41,7 +42,10 @@ const AppRoutes = () => {
           <Route path="editor/:id" element={<CreateAgent />} />
         </Route>
         <Route path="knowledge" element={<Knowledge />} />
-        <Route path="tickets" element={<Tickets />} />
+        <Route path="tickets">
+          <Route index element={<Tickets />} />
+          <Route path="focus-area" element={<FocusArea />} />
+        </Route>
         <Route path="forms">
           <Route index element={<FormsList />} />
           <Route path="create" element={<CreateForm />} />

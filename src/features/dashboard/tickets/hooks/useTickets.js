@@ -51,6 +51,16 @@ export const useTickets = () => {
         }
     };
 
+    const updateTicket = async (ticketId, data) => {
+        try {
+            await ticketsApi.updateTicket(ticketId, data);
+            toast.success('Ticket updated');
+            await fetchTickets();
+        } catch (err) {
+            toast.error('Failed to update ticket');
+        }
+    };
+
     const addTicket = async (data) => {
         try {
             await ticketsApi.createTicket(data);
@@ -71,6 +81,7 @@ export const useTickets = () => {
         error,
         fetchTickets,
         resolveTicket,
+        updateTicket,
         deleteTicket,
         bulkDelete,
         addTicket
