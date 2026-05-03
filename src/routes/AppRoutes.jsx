@@ -17,6 +17,7 @@ import FormsList from '../features/dashboard/forms/pages/Forms'
 import CreateForm from '../features/dashboard/forms/pages/CreateForm'
 import Results from '../features/dashboard/forms/pages/Results'
 import Leads from '../features/dashboard/leads/pages/Leads'
+import Emails from '../features/dashboard/email/pages/Emails'
 
 const AppRoutes = () => {
 
@@ -53,6 +54,7 @@ const AppRoutes = () => {
           <Route path="results" element={<Results />} />
         </Route>
         <Route path="leads" element={<Leads />} />
+        <Route path="email" element={<Emails />} />
       </Route>
     </Routes>
   )
