@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getMyChatbots, updateChatbot } from '../services/chatbot.api';
+import { getMyChatbots, updateChatbot, setMasterChatbot } from '../services/chatbot.api';
 import { askAI } from '../services/ai.api';
 import { toast } from 'react-hot-toast';
 
@@ -28,7 +28,9 @@ export const usePlayground = () => {
             const bots = response.chatbots || [];
             setChatbots(bots);
             if (bots.length > 0) {
-                selectBot(bots[0]);
+                // Try to select the master bot by default
+                const masterBot = bots.find(b => b.isMaster);
+                selectBot(masterBot || bots[0]);
             }
         } catch (error) {
             toast.error('Failed to fetch chatbots');
@@ -82,6 +84,31 @@ export const usePlayground = () => {
         }
     };
 
+    const handleSetMaster = async () => {
+        if (!selectedBot) return;
+
+        // Check if there's already another master agent
+        const currentMaster = chatbots.find(b => b.isMaster);
+        if (currentMaster && currentMaster._id !== selectedBot._id) {
+            const confirmReplacement = window.confirm(
+                `"${currentMaster.name}" is currently set as your Master Agent.\n\nSetting "${selectedBot.name}" as the new Master will immediately change the AI's prompt and knowledge for all automated Email and Form responses.\n\nDo you want to proceed?`
+            );
+            if (!confirmReplacement) return;
+        }
+
+        try {
+            await setMasterChatbot(selectedBot._id);
+            toast.success(`${selectedBot.name} is now the Master Agent`);
+            setChatbots(prev => prev.map(b => ({
+                ...b,
+                isMaster: b._id === selectedBot._id
+            })));
+            setSelectedBot(prev => ({ ...prev, isMaster: true }));
+        } catch (error) {
+            toast.error('Failed to set master agent');
+        }
+    };
+
     const clearChat = () => {
         if (selectedBot) {
             localStorage.removeItem(`playground_chat_${selectedBot._id}`);
@@ -120,6 +147,7 @@ export const usePlayground = () => {
         selectBot,
         handleInputChange,
         handleSave,
+        handleSetMaster,
         sendMessage,
         clearChat
     };

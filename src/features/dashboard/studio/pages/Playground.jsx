@@ -4,7 +4,7 @@ import SideNav from '../../../../shared/layout/SideNav';
 import { usePlayground } from '../hooks/usePlayground';
 import { 
     Send, Bot, User, Sparkles, Save, Code, Copy, Check, 
-    ChevronRight, Info, MessageSquare, Terminal, RefreshCw, X, Plus
+    ChevronRight, Info, MessageSquare, Terminal, RefreshCw, X, Plus, Shield
 } from 'lucide-react';
 import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
 import ReactMarkdown from 'react-markdown';
@@ -21,6 +21,7 @@ const Playground = () => {
         selectBot,
         handleInputChange,
         handleSave,
+        handleSetMaster,
         sendMessage,
         clearChat
     } = usePlayground();
@@ -63,19 +64,39 @@ const Playground = () => {
                         {loading ? (
                             <Skeleton width={180} height={36} />
                         ) : (
-                            <div className="relative flex-1 sm:flex-none min-w-[150px]">
-                                <select 
-                                    className="appearance-none w-full bg-surface border border-border rounded px-4 py-2 pr-10 text-sm font-medium focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all cursor-pointer"
-                                    value={selectedBot?._id || ''}
-                                    onChange={(e) => selectBot(chatbots.find(b => b._id === e.target.value))}
-                                >
-                                    {chatbots.map(bot => (
-                                        <option key={bot._id} value={bot._id}>{bot.name}</option>
-                                    ))}
-                                </select>
-                                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-foreground/40">
-                                    <ChevronRight size={14} className="rotate-90" />
+                            <div className="flex items-center gap-3">
+                                <div className="relative flex-1 sm:flex-none min-w-[150px]">
+                                    <select 
+                                        className="appearance-none w-full bg-surface border border-border rounded px-4 py-2 pr-10 text-sm font-medium focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all cursor-pointer"
+                                        value={selectedBot?._id || ''}
+                                        onChange={(e) => selectBot(chatbots.find(b => b._id === e.target.value))}
+                                    >
+                                        {chatbots.map(bot => (
+                                            <option key={bot._id} value={bot._id}>
+                                                {bot.name} {bot.isMaster ? '👑' : ''}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-foreground/40">
+                                        <ChevronRight size={14} className="rotate-90" />
+                                    </div>
                                 </div>
+
+                                {selectedBot && (
+                                    <button
+                                        onClick={handleSetMaster}
+                                        disabled={selectedBot.isMaster}
+                                        className={`flex items-center gap-2 px-3 py-2 rounded text-[10px] font-bold uppercase tracking-wider transition-all border ${
+                                            selectedBot.isMaster 
+                                            ? 'bg-amber-500/10 border-amber-500/20 text-amber-500 cursor-default' 
+                                            : 'bg-surface border-border text-foreground/40 hover:text-foreground hover:border-border cursor-pointer'
+                                        }`}
+                                        title={selectedBot.isMaster ? "Currently the Master Agent" : "Set as Master Agent"}
+                                    >
+                                        <Shield size={12} className={selectedBot.isMaster ? 'fill-amber-500/20' : ''} />
+                                        <span>{selectedBot.isMaster ? 'Master Agent' : 'Set as Master'}</span>
+                                    </button>
+                                )}
                             </div>
                         )}
 

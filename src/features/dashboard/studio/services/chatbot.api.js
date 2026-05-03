@@ -29,3 +29,8 @@ export const toggleChatbotStatus = async (id) => {
     const response = await api.patch(`/chatbot/toggle/status/${id}`);
     return response.data;
 };
+
+export const setMasterChatbot = async (id) => {
+    const response = await api.patch(`/chatbot/master/${id}`);
+    return response.data;
+};
