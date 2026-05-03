@@ -1,115 +1,13 @@
 import React, { useState } from 'react';
 import SideNav from '../../../../shared/layout/SideNav';
 import { useEmails } from '../hooks/useEmails';
-import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
 import { 
-    Mail, CheckCircle2, Tag, AlertCircle, Search, 
-    Filter, ChevronRight, Inbox, Send, AlertTriangle,
-    RefreshCw, Clock, User, X, ExternalLink, Bot
+    CheckCircle2, Tag, AlertTriangle, RefreshCw, Clock
 } from 'lucide-react';
-
-const StatCard = ({ title, value, icon: Icon, loading, colorClass, iconColor }) => (
-    <div className="bg-surface/30 border border-border rounded p-6 space-y-3 transition-all hover:border-primary/30 group">
-        <div className="flex items-center justify-between">
-            <div className={`p-2 rounded ${colorClass} group-hover:scale-110 transition-transform duration-500`}>
-                <Icon size={18} className={iconColor} />
-            </div>
-        </div>
-        <div>
-            {loading ? <Skeleton width={60} height={32} /> : <p className="text-3xl font-bold tracking-tight">{value}</p>}
-            <p className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 mt-1">{title}</p>
-        </div>
-    </div>
-);
-
-const EmailDetailsModal = ({ isOpen, onClose, email, statusConfig }) => {
-    if (!isOpen || !email) return null;
-
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-md bg-black/20">
-            <div className="w-full max-w-2xl bg-background border border-border rounded shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 flex flex-col max-h-[90vh]">
-                <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-surface/50">
-                    <div className="flex items-center gap-3">
-                        <div className="p-2 rounded bg-primary/10 text-primary">
-                            <Mail size={18} />
-                        </div>
-                        <h2 className="text-sm font-bold uppercase tracking-widest">Message Details</h2>
-                    </div>
-                    <button 
-                        onClick={onClose}
-                        className="p-2 hover:bg-surface rounded text-foreground/40 hover:text-foreground transition-colors cursor-pointer"
-                    >
-                        <X size={20} />
-                    </button>
-                </div>
-
-                <div className="flex-1 overflow-y-auto custom-scrollbar p-8 space-y-8">
-                    <div className="space-y-6">
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest">Subject</label>
-                            <h3 className="text-lg font-bold leading-tight">{email.subject || '(No Subject)'}</h3>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-6 pb-6 border-b border-border">
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest">From</label>
-                                <div className="flex items-center gap-2 text-xs font-medium">
-                                    <User size={14} className="text-primary" />
-                                    {email.from}
-                                </div>
-                            </div>
-                            <div className="space-y-2 text-right">
-                                <label className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest">Processed At</label>
-                                <div className="text-xs font-medium">
-                                    {new Date(email.createdAt).toLocaleString()}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
-                                <Bot size={14} />
-                                AI Automation Logic
-                            </label>
-                            <div className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-tighter border ${statusConfig[email.status]?.class}`}>
-                                {statusConfig[email.status]?.label}
-                            </div>
-                        </div>
-
-                        <div className="p-6 bg-surface/30 border border-border rounded space-y-4 relative overflow-hidden group">
-                            <div className="text-xs text-foreground/70 leading-relaxed whitespace-pre-wrap font-mono">
-                                {email.aiResponse || 'No details available for this automation step.'}
-                            </div>
-                        </div>
-
-                        {email.status === 'ticket' && (
-                            <div className="p-4 bg-amber-500/5 border border-amber-500/10 rounded flex gap-3">
-                                <AlertCircle size={18} className="text-amber-500 shrink-0" />
-                                <div className="space-y-1">
-                                    <p className="text-[10px] font-bold uppercase tracking-wider text-amber-500">Escalation Note</p>
-                                    <p className="text-[11px] text-amber-500/70 leading-relaxed">
-                                        This email required human intervention. An automated ticket has been created in your Support center.
-                                    </p>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                <div className="px-6 py-4 border-t border-border bg-surface/30 flex justify-end">
-                    <button 
-                        onClick={onClose}
-                        className="px-6 py-2 bg-primary text-white rounded text-[10px] font-bold uppercase tracking-wider hover:opacity-90 transition-opacity cursor-pointer"
-                    >
-                        Close
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-};
+import EmailStats from '../components/EmailStats';
+import EmailFilters from '../components/EmailFilters';
+import EmailTable from '../components/EmailTable';
+import EmailDetailsModal from '../components/EmailDetailsModal';
 
 const Emails = () => {
     const { emails, stats, loading, refresh } = useEmails();
@@ -154,132 +52,23 @@ const Emails = () => {
                 </header>
 
                 <div className="p-[clamp(1rem,4vw,2rem)] space-y-[clamp(1.5rem,5vw,2.5rem)] max-w-7xl mx-auto w-full animate-in fade-in duration-700">
-                    {/* Stats Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <StatCard 
-                            title="Total Received" 
-                            value={stats.total} 
-                            icon={Inbox} 
-                            loading={loading} 
-                            colorClass="bg-primary/10" 
-                            iconColor="text-primary" 
-                        />
-                        <StatCard 
-                            title="AI Resolved" 
-                            value={stats.resolved} 
-                            icon={CheckCircle2} 
-                            loading={loading} 
-                            colorClass="bg-green-500/10" 
-                            iconColor="text-green-500" 
-                        />
-                        <StatCard 
-                            title="Made Tickets" 
-                            value={stats.tickets} 
-                            icon={Tag} 
-                            loading={loading} 
-                            colorClass="bg-amber-500/10" 
-                            iconColor="text-amber-500" 
-                        />
-                        <StatCard 
-                            title="Success Rate" 
-                            value={stats.total > 0 ? `${Math.round(((stats.resolved + stats.tickets) / stats.total) * 100)}%` : '0%'} 
-                            icon={Send} 
-                            loading={loading} 
-                            colorClass="bg-blue-500/10" 
-                            iconColor="text-blue-500" 
-                        />
-                    </div>
+                    <EmailStats stats={stats} loading={loading} />
 
-                    {/* Filters & Table Section */}
                     <div className="space-y-6">
-                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-surface/10 p-4 border border-border rounded">
-                            <div className="relative group flex-1 max-w-md w-full">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/20 group-focus-within:text-primary transition-colors" size={14} />
-                                <input 
-                                    type="text" 
-                                    placeholder="Search by sender or subject..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded text-xs focus:outline-none focus:border-primary/50 transition-all"
-                                />
-                            </div>
-                            
-                            <div className="flex items-center gap-2 bg-surface border border-border rounded p-1 shrink-0">
-                                {['all', 'replied', 'ticket', 'error'].map((k) => (
-                                    <button
-                                        key={k}
-                                        onClick={() => setFilter(k)}
-                                        className={`px-4 py-1.5 rounded text-[10px] font-bold uppercase tracking-wider transition-all ${filter === k ? 'bg-background shadow-sm text-primary' : 'text-foreground/40 hover:text-foreground'}`}
-                                    >
-                                        {k === 'replied' ? 'Resolved' : k.charAt(0).toUpperCase() + k.slice(1)}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+                        <EmailFilters 
+                            searchQuery={searchQuery} 
+                            setSearchQuery={setSearchQuery} 
+                            filter={filter} 
+                            setFilter={setFilter} 
+                        />
 
-                        {loading && emails.length === 0 ? (
-                            <SkeletonWrapper>
-                                <div className="space-y-3">
-                                    {[...Array(5)].map((_, i) => <Skeleton key={i} height={60} />)}
-                                </div>
-                            </SkeletonWrapper>
-                        ) : filteredEmails.length > 0 ? (
-                            <div className="bg-surface/10 border border-border rounded overflow-hidden">
-                                <table className="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr className="bg-foreground/2 border-b border-border">
-                                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Inbound Message</th>
-                                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40">Automation Status</th>
-                                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-wider text-foreground/40 text-right">Processed At</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-border/50">
-                                        {filteredEmails.map((email) => {
-                                            const cfg = statusConfig[email.status] || statusConfig.skipped;
-                                            const StatusIcon = cfg.icon;
-                                            
-                                            return (
-                                                <tr 
-                                                    key={email._id} 
-                                                    onClick={() => setSelectedEmail(email)}
-                                                    className="group hover:bg-foreground/2 transition-colors cursor-pointer"
-                                                >
-                                                    <td className="px-6 py-5">
-                                                        <div className="flex flex-col gap-1 min-w-0 max-w-xl">
-                                                            <span className="text-sm font-medium group-hover:text-primary transition-colors truncate">{email.subject || '(No Subject)'}</span>
-                                                            <span className="text-[11px] text-foreground/40 flex items-center gap-2">
-                                                                <User size={10} />
-                                                                {email.from}
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td className="px-6 py-5">
-                                                        <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded border ${cfg.class} text-[10px] font-black uppercase tracking-widest`}>
-                                                            <StatusIcon size={12} />
-                                                            {cfg.label}
-                                                        </div>
-                                                    </td>
-                                                    <td className="px-6 py-5 text-right">
-                                                        <div className="flex flex-col items-end gap-1">
-                                                            <span className="text-xs font-medium">{new Date(email.createdAt).toLocaleDateString()}</span>
-                                                            <span className="text-[10px] text-foreground/30">{new Date(email.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
-                            </div>
-                        ) : (
-                            <div className="py-20 text-center border border-dashed border-border rounded bg-surface/5">
-                                <div className="w-16 h-16 rounded bg-surface border border-border flex items-center justify-center mx-auto mb-4 opacity-50">
-                                    <Mail size={32} className="text-foreground/20" />
-                                </div>
-                                <h3 className="text-sm font-bold text-foreground/60">No emails found</h3>
-                                <p className="text-xs text-foreground/30 mt-1">Check your filters or ensure your IMAP connection is active.</p>
-                            </div>
-                        )}
+                        <EmailTable 
+                            loading={loading}
+                            emails={emails}
+                            filteredEmails={filteredEmails}
+                            onSelectEmail={setSelectedEmail}
+                            statusConfig={statusConfig}
+                        />
                     </div>
                 </div>
             </main>
