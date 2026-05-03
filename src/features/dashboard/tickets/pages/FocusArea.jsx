@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import SideNav from '../../../../shared/layout/SideNav';
 import { useTickets } from '../hooks/useTickets';
 import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
@@ -105,11 +106,10 @@ const FocusArea = () => {
             <main className="flex-1 flex flex-col min-w-0 bg-surface/5">
                 {/* Unbreakable Header */}
                 <header className="sticky top-0 z-10 h-16 border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-8 shrink-0 gap-4">
-                    <div className="min-w-0 flex-1">
-                        <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold truncate">Focus Area</h1>
-                        <p className="text-[clamp(0.65rem,1.5vw,0.75rem)] text-foreground/40 truncate">
-                            {openTickets.length} critical tickets remaining
-                        </p>
+                    <div className="flex items-center gap-2 overflow-hidden">
+                        <NavLink to="/dashboard/tickets" className="text-sm text-foreground/40 hover:text-foreground transition-colors font-medium whitespace-nowrap">Tickets</NavLink>
+                        <ChevronRight size={16} className="text-foreground/20 shrink-0" />
+                        <span className="text-sm text-foreground font-medium truncate">Focus Area</span>
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
                         <button 

@@ -4,7 +4,7 @@ import SideNav from '../../../../shared/layout/SideNav';
 import { usePlayground } from '../hooks/usePlayground';
 import { 
     Send, Bot, User, Sparkles, Save, Code, Copy, Check, 
-    ChevronRight, Info, MessageSquare, Terminal, RefreshCw, X
+    ChevronRight, Info, MessageSquare, Terminal, RefreshCw, X, Plus
 } from 'lucide-react';
 import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
 import ReactMarkdown from 'react-markdown';
@@ -91,7 +91,37 @@ const Playground = () => {
                 </header>
 
                 <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-                    {/* Configuration Sidebar (70% on large, full on small) */}
+                    {loading ? (
+                        <div className="flex-1 flex items-center justify-center">
+                            <SkeletonWrapper>
+                                <div className="space-y-4">
+                                    <Skeleton width={200} height={20} />
+                                    <Skeleton width={300} height={100} />
+                                </div>
+                            </SkeletonWrapper>
+                        </div>
+                    ) : chatbots.length === 0 ? (
+                        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-6">
+                            <div className="w-16 h-16 bg-surface rounded-full flex items-center justify-center shadow-lg shadow-primary/5">
+                                <Bot size={32} className="text-foreground/20" />
+                            </div>
+                            <div className="space-y-2">
+                                <h2 className="text-xl font-bold">No Agents Available</h2>
+                                <p className="text-sm text-foreground/40 max-w-sm mx-auto">
+                                    You haven't created any AI agents yet. You need at least one agent to use the playground.
+                                </p>
+                            </div>
+                            <NavLink
+                                to="/dashboard/studio/editor"
+                                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 cursor-pointer"
+                            >
+                                <Plus size={18} />
+                                <span>Create First Agent</span>
+                            </NavLink>
+                        </div>
+                    ) : (
+                        <>
+                            {/* Configuration Sidebar (70% on large, full on small) */}
                     <div className="flex-1 lg:w-[70%] border-b lg:border-b-0 lg:border-r border-border overflow-y-auto p-4 sm:p-8 custom-scrollbar bg-background/50">
                         <div className="max-w-4xl space-y-8">
                             <div className="space-y-6">
@@ -259,6 +289,8 @@ const Playground = () => {
                             </p>
                         </div>
                     </div>
+                        </>
+                    )}
                 </div>
             </main>
         </div>
