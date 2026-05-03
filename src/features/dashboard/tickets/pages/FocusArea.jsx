@@ -16,6 +16,7 @@ const FocusArea = () => {
     const [subject, setSubject] = useState('');
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isResolving, setIsResolving] = useState(false);
+    const [trainAi, setTrainAi] = useState(true);
 
     // Filter only open tickets and sort them by priority
     const openTickets = tickets
@@ -53,7 +54,8 @@ const FocusArea = () => {
         try {
             await resolveTicket(currentTicket._id, { 
                 response: response,
-                subject: subject
+                subject: subject,
+                trainAi: trainAi
             });
             setResponse('');
             // Move to next available ticket ID
@@ -214,7 +216,19 @@ const FocusArea = () => {
                                                 className="w-full h-48 bg-surface/50 border border-border rounded p-6 text-sm focus:outline-none focus:border-primary/50 transition-all resize-none custom-scrollbar"
                                             />
                                         </div>
-                                        <div className="flex justify-end pt-2">
+                                        <div className="flex items-center justify-between pt-2">
+                                            <div className="flex items-center gap-2">
+                                                <input 
+                                                    type="checkbox" 
+                                                    id="trainAiFocus"
+                                                    checked={trainAi}
+                                                    onChange={(e) => setTrainAi(e.target.checked)}
+                                                    className="w-3.5 h-3.5 rounded border-border bg-surface text-primary focus:ring-primary/20 cursor-pointer"
+                                                />
+                                                <label htmlFor="trainAiFocus" className="text-[10px] font-bold uppercase tracking-wider text-foreground/40 cursor-pointer select-none">
+                                                    Use this response to train AI
+                                                </label>
+                                            </div>
                                             <button 
                                                 onClick={handleResolve}
                                                 disabled={!response.trim() || isResolving}

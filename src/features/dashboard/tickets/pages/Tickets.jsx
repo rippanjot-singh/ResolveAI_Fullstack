@@ -54,6 +54,7 @@ const TicketDetailsModal = ({ isOpen, onClose, ticket, onResolve }) => {
     const [subject, setSubject] = useState('');
     const [response, setResponse] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [trainAi, setTrainAi] = useState(true);
 
     useEffect(() => {
         if (ticket) {
@@ -68,7 +69,7 @@ const TicketDetailsModal = ({ isOpen, onClose, ticket, onResolve }) => {
         if (!response.trim()) return;
         setIsSubmitting(true);
         try {
-            await onResolve(ticket._id, { subject, response });
+            await onResolve(ticket._id, { subject, response, trainAi });
             onClose();
         } finally {
             setIsSubmitting(false);
@@ -165,6 +166,18 @@ const TicketDetailsModal = ({ isOpen, onClose, ticket, onResolve }) => {
                                         placeholder="Write your resolution message here..."
                                         className="w-full h-32 bg-surface/50 border border-border rounded p-4 text-sm focus:outline-none focus:border-green-500/50 transition-all resize-none custom-scrollbar"
                                     />
+                                </div>
+                                <div className="flex items-center gap-2 px-1">
+                                    <input 
+                                        type="checkbox" 
+                                        id="trainAi"
+                                        checked={trainAi}
+                                        onChange={(e) => setTrainAi(e.target.checked)}
+                                        className="w-3.5 h-3.5 rounded border-border bg-surface text-primary focus:ring-primary/20 cursor-pointer"
+                                    />
+                                    <label htmlFor="trainAi" className="text-[10px] font-bold uppercase tracking-wider text-foreground/40 cursor-pointer select-none">
+                                        Use this response to train AI
+                                    </label>
                                 </div>
                                 <button
                                     onClick={handleResolve}
