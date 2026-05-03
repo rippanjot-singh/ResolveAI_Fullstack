@@ -1,10 +1,13 @@
-
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useSelector } from 'react-redux';
 import constants from '../../../assets/constants'
+
 export const SignUp = () => {
+  const [searchParams] = useSearchParams();
+  const inviteToken = searchParams.get('inviteToken');
+  
   const [showPassword, setShowPassword] = useState(false);
   const [companyName, setCompanyName] = useState('');
   const [name, setName] = useState('');
@@ -15,7 +18,7 @@ export const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signup({ companyName, name, email, password });
+      await signup({ companyName, name, email, password }, inviteToken);
     } catch (err) {
       console.error(err);
     }
@@ -47,20 +50,22 @@ export const SignUp = () => {
             {/* Form */}
             <form className="space-y-4" onSubmit={handleSubmit}>
               {error && <div className="text-red-500 text-sm">{error}</div>}
-              <div className="space-y-1.5">
-                <label htmlFor="companyName" className="text-sm font-medium">
-                  Company Name
-                </label>
-                <input
-                  id="companyName"
-                  type="text"
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  placeholder="ABC Company"
-                  className="w-full rounded border border-border bg-transparent px-3 py-2 text-sm outline-none focus:border-primary transition-colors"
-                  required
-                />
-              </div>
+              {!inviteToken && (
+                <div className="space-y-1.5">
+                  <label htmlFor="companyName" className="text-sm font-medium">
+                    Company Name
+                  </label>
+                  <input
+                    id="companyName"
+                    type="text"
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                    placeholder="ABC Company"
+                    className="w-full rounded border border-border bg-transparent px-3 py-2 text-sm outline-none focus:border-primary transition-colors"
+                    required
+                  />
+                </div>
+              )}
               <div className="space-y-1.5">
                 <label htmlFor="name" className="text-sm font-medium">
                   Full Name

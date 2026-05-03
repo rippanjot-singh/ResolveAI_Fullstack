@@ -26,11 +26,11 @@ export const useAuth = () => {
         }
     }, [dispatch, navigate]);
 
-    const signup = useCallback(async (userData) => {
+    const signup = useCallback(async (userData, inviteToken) => {
         dispatch(setLoading(true));
         dispatch(setError(null));
         try {
-            const data = await authApi.signup(userData);
+            const data = await authApi.signup(userData, inviteToken);
             dispatch(setUser(data.user || data)); 
             navigate('/dashboard'); 
             return data;

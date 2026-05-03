@@ -18,6 +18,9 @@ import CreateForm from '../features/dashboard/forms/pages/CreateForm'
 import Results from '../features/dashboard/forms/pages/Results'
 import Leads from '../features/dashboard/leads/pages/Leads'
 import Emails from '../features/dashboard/email/pages/Emails'
+import SettingsLayout from '../features/dashboard/settings/layout/SettingsLayout'
+import AccountSettings from '../features/dashboard/settings/pages/AccountSettings'
+import InviteMember from '../features/dashboard/settings/pages/InviteMember'
 
 const AppRoutes = () => {
 
@@ -55,6 +58,12 @@ const AppRoutes = () => {
         </Route>
         <Route path="leads" element={<Leads />} />
         <Route path="email" element={<Emails />} />
+        
+        {/* Settings Routes */}
+        <Route path="settings" element={<SettingsLayout />}>
+          <Route index element={<AccountSettings />} />
+          <Route path="invite" element={<InviteMember />} />
+        </Route>
       </Route>
     </Routes>
   )

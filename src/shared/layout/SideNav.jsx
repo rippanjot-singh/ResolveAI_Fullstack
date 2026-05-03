@@ -59,6 +59,15 @@ const PLATFORM_LINKS = [
         icon: Mail,
         path: '/dashboard/email',   
     },
+    {
+        title: 'Settings',
+        icon: Settings,
+        path: '/dashboard/settings',
+        children: [
+            { title: 'Account Profile', path: '/dashboard/settings' },
+            { title: 'Invite Member', path: '/dashboard/settings/invite' },
+        ]
+    },
 ];
 
 const SideNav = () => {
@@ -287,7 +296,7 @@ const SideNav = () => {
                 {/* Profile Dropdown */}
                 {isProfileOpen && (
                     <div className={`absolute bottom-full left-3 bg-background border border-border rounded shadow-md py-1 mb-2 z-50 ${isCollapsed ? 'w-48' : 'w-[calc(100%-24px)]'}`}>
-                        <button
+                        {/* <button
                             onClick={() => {
                                 setIsProfileOpen(false);
                                 navigate('/dashboard/settings');
@@ -297,7 +306,7 @@ const SideNav = () => {
                             <Settings size={16} />
                             Settings
                         </button>
-                        <div className="h-px bg-border my-1 w-full" />
+                        <div className="h-px bg-border my-1 w-full" /> */}
                         <button
                             onClick={logout}
                             className="w-full flex items-center gap-3 px-3 py-2 text-sm text-red-500 hover:bg-red-500/10 transition-colors text-left cursor-pointer"

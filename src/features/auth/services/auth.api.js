@@ -5,8 +5,9 @@ export const authApi = {
         const response = await api.post('/auth/login', credentials);
         return response.data;
     },
-    signup: async (userData) => {
-        const response = await api.post('/auth/signup', userData);
+    signup: async (userData, inviteToken) => {
+        const url = inviteToken ? `/auth/signup?inviteToken=${inviteToken}` : '/auth/signup';
+        const response = await api.post(url, userData);
         return response.data;
     },
     logout: async () => {
