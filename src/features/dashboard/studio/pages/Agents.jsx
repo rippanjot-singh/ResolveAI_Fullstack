@@ -228,7 +228,14 @@ const AgentCard = ({ bot, onToggle, onDelete, onShowCode }) => (
                     <Bot size={20} />
                 </div>
                 <div className="space-y-0.5">
-                    <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">{bot.name}</h3>
+                    <div className="flex items-center gap-2">
+                        <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">{bot.name}</h3>
+                        {bot.isMaster && (
+                            <span className="px-1.5 py-0.5 rounded bg-yellow-400/20 text-yellow-700 text-[10px] uppercase font-semibold tracking-wider border border-yellow-400">
+                                Master
+                            </span>
+                        )}
+                    </div>
                     <div className="flex items-center gap-1">
                         <span className={`w-1.5 h-1.5 rounded ${bot.isActive ? 'bg-green-500' : 'bg-foreground/20'}`} />
                         <span className="text-[10px] uppercase font-medium tracking-wider text-foreground/40">
