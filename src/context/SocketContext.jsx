@@ -12,21 +12,21 @@ export const SocketProvider = ({ children }) => {
     const socket = useRef();
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.auth); 
+    const companyId = user?.companyId;
 
     useEffect(() => {
-        const socketUrl = window.location.origin; // Or use your API URL
+        if (!companyId) return;
+
+        const socketUrl = window.location.origin;
         socket.current = io(socketUrl, {
-            path: '/socket.io'
+            path: '/socket.io',
+            transports: ['polling', 'websocket']
         });
 
         socket.current.on('connect', () => {
             console.log('Connected to socket server. ID:', socket.current.id);
-            if (user?.companyId) {
-                console.log('Joining company room:', user.companyId);
-                socket.current.emit('join_company', user.companyId);
-            } else {
-                console.warn('No companyId found for user, not joining room.');
-            }
+            console.log('Joining company room:', companyId);
+            socket.current.emit('join_company', companyId);
         });
 
         socket.current.on('connect_error', (error) => {
