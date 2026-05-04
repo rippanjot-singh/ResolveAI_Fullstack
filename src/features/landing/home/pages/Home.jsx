@@ -3,9 +3,11 @@ import Lenis from 'lenis';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Bot, Inbox, MessageSquare, Zap, Command, Search, User, ChevronRight, ChevronDown } from 'lucide-react';
 import Navbar from '../../../../shared/layout/Navbar';
+import { useAuth } from '../../../auth/hooks/useAuth';
 
 const Home = () => {
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -427,12 +429,20 @@ const Home = () => {
                     Give your team the workspace they deserve. Start your 14-day free trial today.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <Link to="/signup" className="h-14 px-8 bg-primary text-white flex items-center justify-center rounded font-light hover:bg-primary/80 transition-all w-full sm:w-auto shadow-xl shadow-black/20 hover:scale-[1.02] cursor-pointer">
-                        Get Started for Free
-                    </Link>
-                    <button onClick={() => navigate('/login')} className="h-14 px-8 bg-transparent text-black border border-black/10 flex items-center justify-center rounded font-light hover:bg-black/5 transition-colors w-full sm:w-auto cursor-pointer">
-                        Login
-                    </button>
+                    {user ? (
+                        <Link to="/dashboard" className="h-14 px-10 bg-primary text-white flex items-center justify-center rounded font-light hover:bg-primary/80 transition-all w-full sm:w-auto shadow-xl shadow-black/20 hover:scale-[1.02] cursor-pointer">
+                            Return to Dashboard
+                        </Link>
+                    ) : (
+                        <>
+                            <Link to="/signup" className="h-14 px-8 bg-primary text-white flex items-center justify-center rounded font-light hover:bg-primary/80 transition-all w-full sm:w-auto shadow-xl shadow-black/20 hover:scale-[1.02] cursor-pointer">
+                                Get Started for Free
+                            </Link>
+                            <button onClick={() => navigate('/login')} className="h-14 px-8 bg-transparent text-black border border-black/10 flex items-center justify-center rounded font-light hover:bg-black/5 transition-colors w-full sm:w-auto cursor-pointer">
+                                Login
+                            </button>
+                        </>
+                    )}
                 </div>
             </section>
 

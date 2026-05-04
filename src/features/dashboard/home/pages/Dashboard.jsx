@@ -18,13 +18,13 @@ const Dashboard = () => {
         return (
             <div className="flex h-screen w-full bg-background text-foreground overflow-hidden">
                 <SideNav />
-                <main className="flex-1 overflow-y-auto">
-                    <header className="sticky top-0 z-10 h-16 border-b border-border bg-background/80 backdrop-blur-sm flex items-center px-8">
+                <main className="flex-1 overflow-y-auto min-w-0">
+                    <header className="sticky top-0 z-10 h-16 border-b border-border bg-background/80 backdrop-blur-sm flex items-center px-4 md:px-8">
                         <Skeleton width={120} height={20} />
                     </header>
-                    <div className="p-8 mx-auto space-y-8">
+                    <div className="p-4 md:p-8 mx-auto space-y-6 md:space-y-8">
                         <SkeletonWrapper>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                                 {[...Array(4)].map((_, i) => (
                                     <div key={i} className="border border-border rounded p-5 bg-surface/30 flex flex-col gap-3">
                                         <div className="flex items-center justify-between">
@@ -36,14 +36,14 @@ const Dashboard = () => {
                                     </div>
                                 ))}
                             </div>
-                            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8">
                                 <div className="lg:col-span-3 border border-border rounded overflow-hidden bg-surface/30">
-                                    {[...Array(10)].map((_, i) => (
+                                    {[...Array(6)].map((_, i) => (
                                         <div key={i} className="flex items-center gap-4 px-6 py-4 border-b border-border last:border-0">
                                             <Skeleton width={120} height={14} />
                                             <Skeleton width={60} height={18} />
                                             <Skeleton width={100} height={14} />
-                                            <Skeleton width={80} height={14} className="ml-auto" />
+                                            <Skeleton width={80} height={14} className="ml-auto hidden md:block" />
                                         </div>
                                     ))}
                                 </div>
@@ -92,14 +92,14 @@ const Dashboard = () => {
         <div className="flex h-screen w-full bg-background text-foreground overflow-hidden">
             <SideNav />
 
-            <main className="flex-1 overflow-y-auto">
+            <main className="flex-1 overflow-y-auto min-w-0">
                 <DashboardHeader />
 
-                <div className="p-8 mx-auto space-y-8">
+                <div className="p-4 md:p-8 mx-auto space-y-6 md:space-y-8">
                     <WelcomeSection show={activeChatbots.length === 0} />
 
                     {/* KPI Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <KpiCard
                             title="Open Tickets"
                             value={kpis.openTickets}
@@ -128,7 +128,7 @@ const Dashboard = () => {
                     </div>
 
                     {/* Main Content Grid */}
-                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8">
                         <NeedsAttention tickets={recentTickets} />
                         <SystemIntelligence activeChatbots={activeChatbots} kpis={kpis} />
                     </div>

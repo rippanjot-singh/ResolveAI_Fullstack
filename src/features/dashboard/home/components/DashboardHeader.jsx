@@ -4,24 +4,26 @@ import { Bot, FileText } from 'lucide-react';
 
 const DashboardHeader = () => {
     return (
-        <header className="sticky top-0 z-10 h-16 border-b border-border bg-background/80 backdrop-blur-sm flex items-center justify-between px-8 gap-4">
-            <div className="min-w-0">
-                <h1 className="text-[clamp(1rem,3vw,1.125rem)] font-bold truncate">Dashboard</h1>
+        <header className="sticky top-0 z-50 h-16 border-b border-border bg-background flex items-center justify-between px-4 lg:px-8 gap-4 shadow-sm">
+            <div className="min-w-0 flex items-center gap-3">
+                <h1 className="text-sm md:text-base font-bold truncate text-foreground">Dashboard</h1>
             </div>
-            <div className="flex items-center gap-3 shrink-0">
+            <div className="flex items-center gap-2 lg:gap-3 shrink-0">
                 <NavLink
                     to="/dashboard/studio/editor"
-                    className="flex items-center gap-2 px-4 py-2 bg-primary text-white border border-border rounded text-sm font-medium hover:bg-primary/90 transition-colors"
+                    className="flex items-center gap-2 px-3 lg:px-4 py-1.5 lg:py-2 bg-primary text-white border border-primary rounded text-xs lg:text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm"
                 >
-                    <Bot size={16} />
-                    <span>Create Chatbot</span>
+                    <Bot size={14} className="lg:w-4 lg:h-4" />
+                    <span className="hidden sm:inline">Create Bot</span>
+                    <span className="sm:hidden">Create</span>
                 </NavLink>
                 <NavLink
                     to="/dashboard/forms"
-                    className="flex items-center gap-2 px-4 py-2 bg-surface border border-border rounded text-sm font-medium hover:bg-surface/70 transition-colors"
+                    className="flex items-center gap-2 px-3 lg:px-4 py-1.5 lg:py-2 bg-surface border border-border rounded text-xs lg:text-sm font-medium hover:bg-surface/70 transition-colors"
                 >
-                    <FileText size={16} />
-                    <span>Manage Forms</span>
+                    <FileText size={14} className="lg:w-4 lg:h-4" />
+                    <span className="hidden sm:inline">Manage Forms</span>
+                    <span className="sm:hidden">Forms</span>
                 </NavLink>
             </div>
         </header>

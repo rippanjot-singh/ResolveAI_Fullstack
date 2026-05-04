@@ -28,19 +28,19 @@ const KnowledgeEmptyState = ({ loading, isConnected, connectNotion }) => {
     }
 
     return (
-        <div className="p-12 border border-dashed border-border rounded bg-surface/20 flex flex-col items-center text-center space-y-4">
-            <div className="w-16 h-16 rounded bg-surface flex items-center justify-center border border-border overflow-hidden">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png" alt="Notion" className="w-8 h-8 rounded" />
+        <div className="p-6 md:p-12 border border-dashed border-border rounded bg-surface/20 flex flex-col items-center text-center space-y-4">
+            <div className="w-12 h-12 md:w-16 md:h-16 rounded bg-surface flex items-center justify-center border border-border overflow-hidden">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png" alt="Notion" className="w-6 h-6 md:w-8 md:h-8 rounded" />
             </div>
             <div>
-                <h3 className="text-xl font-bold">Connect Your Knowledge Base</h3>
-                <p className="text-sm text-foreground/50 max-w-md mt-2">
+                <h3 className="text-[clamp(1.125rem,4vw,1.5rem)] font-bold text-foreground">Connect Your Knowledge Base</h3>
+                <p className="text-xs md:text-sm text-foreground/50 max-w-md mt-2 mx-auto">
                     Integrate Notion pages to provide your AI with real-time access to company documentation, guides, and data.
                 </p>
             </div>
             <button
                 onClick={connectNotion}
-                className="mt-4 flex items-center gap-2 px-8 py-3 bg-primary text-white rounded font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
+                className="mt-4 flex items-center gap-2 px-6 md:px-8 py-2.5 md:py-3 bg-primary text-white rounded text-sm md:text-base font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
             >
                 Get Started with Notion
             </button>
