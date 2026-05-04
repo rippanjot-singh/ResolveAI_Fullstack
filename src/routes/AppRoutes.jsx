@@ -21,6 +21,7 @@ import Emails from '../features/dashboard/email/pages/Emails'
 import SettingsLayout from '../features/dashboard/settings/layout/SettingsLayout'
 import AccountSettings from '../features/dashboard/settings/pages/AccountSettings'
 import InviteMember from '../features/dashboard/settings/pages/InviteMember'
+import ManageUsers from '../features/dashboard/settings/pages/ManageUsers'
 import Home from '../features/landing/home/pages/Home'
 
 const AppRoutes = () => {
@@ -66,6 +67,7 @@ const AppRoutes = () => {
         {/* Settings Routes */}
         <Route path="settings" element={<SettingsLayout />}>
           <Route index element={<AccountSettings />} />
+          <Route path="users" element={<ManageUsers />} />
           <Route path="invite" element={<InviteMember />} />
         </Route>
       </Route>

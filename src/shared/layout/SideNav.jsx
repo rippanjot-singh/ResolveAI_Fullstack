@@ -65,6 +65,7 @@ const PLATFORM_LINKS = [
         path: '/dashboard/settings',
         children: [
             { title: 'Account Profile', path: '/dashboard/settings' },
+            { title: 'Company Management', path: '/dashboard/settings/users', adminOnly: true },
             { title: 'Invite Member', path: '/dashboard/settings/invite' },
         ]
     },
@@ -250,18 +251,20 @@ const SideNav = () => {
 
                                         {!isCollapsed && isOpen && (
                                             <div className="ml-4 pl-4 mt-1 border-l border-border/50 flex flex-col gap-1">
-                                                {item.children.map((child) => (
-                                                    <NavLink
-                                                        key={child.title}
-                                                        to={child.path}
-                                                        end={child.path === item.path}
-                                                        className={({ isActive }) =>
-                                                            `px-2 py-1.5 text-sm rounded transition-colors ${isActive ? 'bg-surface text-foreground font-medium' : 'text-foreground/90 hover:text-foreground hover:bg-surface'}`
-                                                        }
-                                                    >
-                                                        {child.title}
-                                                    </NavLink>
-                                                ))}
+                                                {item.children
+                                                    .filter(child => !child.adminOnly || user?.role === 'admin')
+                                                    .map((child) => (
+                                                        <NavLink
+                                                            key={child.title}
+                                                            to={child.path}
+                                                            end={child.path === item.path}
+                                                            className={({ isActive }) =>
+                                                                `px-2 py-1.5 text-sm rounded transition-colors ${isActive ? 'bg-surface text-foreground font-medium' : 'text-foreground/90 hover:text-foreground hover:bg-surface'}`
+                                                            }
+                                                        >
+                                                            {child.title}
+                                                        </NavLink>
+                                                    ))}
                                             </div>
                                         )}
                                     </div>
