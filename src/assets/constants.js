@@ -6,7 +6,8 @@ const constants = {
     name: "ResolveAI",
     logo: logo,
     AuthPhoto: AuthPhoto,
-    AuthPhotoDark: AuthPhotoDark
+    AuthPhotoDark: AuthPhotoDark,
+    BACKEND_URL: import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080'
 }
 
 export default constants;

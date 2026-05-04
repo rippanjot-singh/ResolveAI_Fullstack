@@ -24,6 +24,10 @@ export const SignUp = () => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    window.location.href = `${constants.BACKEND_URL}/api/google`;
+  };
+
   return (
     <div className="min-h-screen w-full flex bg-background text-foreground font-sans">
 
@@ -148,6 +152,7 @@ export const SignUp = () => {
             {/* Google SSO Button */}
             <button
               type="button"
+              onClick={handleGoogleLogin}
               className="w-full rounded border border-border bg-transparent py-2.5 text-sm font-medium hover:bg-surface transition-colors flex items-center justify-center gap-2"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
