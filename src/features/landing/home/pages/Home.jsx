@@ -284,15 +284,34 @@ const Home = () => {
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png" alt="Notion" className="w-4 h-4 object-contain" />
                                     <span className="text-[12px] lg:text-sm font-medium text-black/80 font-sans">Acme Corp Workspace</span>
                                 </div>
-                                <div className="flex-1 p-4 lg:p-5 overflow-hidden bg-white relative">
+                                <div className="flex-1 p-4 lg:p-5 overflow-y-auto bg-white relative scrollbar-hide">
                                     <div className="space-y-1.5 font-sans text-[12px] lg:text-[13px] text-black/70">
-                                        <div className="flex items-center gap-2 py-1.5 px-2 bg-black/5 rounded">
+                                        <div className="flex items-center gap-2 py-1.5 px-2 hover:bg-black/5 rounded cursor-default transition-colors">
+                                            <ChevronRight className="w-3.5 h-3.5 text-black/40" />
+                                            <span className="text-black/80 text-left">Company Handbook</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 py-1.5 px-2 bg-black/5 rounded cursor-default">
                                             <ChevronDown className="w-3.5 h-3.5 text-black/40" />
                                             <span className="font-medium text-black/90 text-left">Support Wiki</span>
                                         </div>
-                                        <div className="pl-6 space-y-1 mt-1 text-left">
-                                            <div className="h-6 w-3/4 bg-black/5 rounded animate-pulse" />
-                                            <div className="h-6 w-1/2 bg-black/5 rounded animate-pulse delay-75" />
+                                        <div className="pl-6 space-y-1.5 mt-1 text-left border-l border-black/5 ml-3.5">
+                                            <div className="flex items-center gap-2 py-1 px-2 hover:bg-black/5 rounded">
+                                                <span className="w-1 h-1 rounded-full bg-black/20" />
+                                                <span className="text-[11px] lg:text-[12px]">Return Policy</span>
+                                            </div>
+                                            <div className="flex items-center gap-2 py-1 px-2 hover:bg-black/5 rounded">
+                                                <span className="w-1 h-1 rounded-full bg-black/20" />
+                                                <span className="text-[11px] lg:text-[12px]">Shipping Guides</span>
+                                            </div>
+                                            <div className="h-4 w-1/2 bg-black/5 rounded animate-pulse ml-3" />
+                                        </div>
+                                        <div className="flex items-center gap-2 py-1.5 px-2 hover:bg-black/5 rounded cursor-default">
+                                            <ChevronRight className="w-3.5 h-3.5 text-black/40" />
+                                            <span className="text-black/80 text-left">Product Roadmap</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 py-1.5 px-2 hover:bg-black/5 rounded cursor-default">
+                                            <ChevronRight className="w-3.5 h-3.5 text-black/40" />
+                                            <span className="text-black/80 text-left">API Documentation</span>
                                         </div>
                                     </div>
                                 </div>
@@ -403,7 +422,7 @@ const Home = () => {
             </section>
 
             {/* EMAIL INTEGRATION SECTION */}
-            <section className="py-24 lg:py-32 bg-[#F9F9F9] overflow-hidden">
+            <section className="py-24 lg:py-32 bg-white overflow-hidden">
                 <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <div>
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 text-[10px] font-bold uppercase tracking-wider mb-6">
