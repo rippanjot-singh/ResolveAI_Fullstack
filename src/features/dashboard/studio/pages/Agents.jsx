@@ -1,12 +1,11 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import SideNav from '../../../../shared/layout/SideNav';
 import { useChatbots } from '../hooks/useChatbots';
 import {
     Plus, Bot, Settings, Trash2, Power, Globe,
     MessageSquare, Activity, ChevronRight, Search,
-    Code, Copy, Check, X,
-    Edit
+    Code, Copy, Check, X, Edit, Play
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { SkeletonWrapper, Skeleton } from '../../../../shared/components/ui/SkeletonWrapper';
@@ -132,6 +131,7 @@ const Agents = () => {
                                     onToggle={() => handleToggleStatus(bot._id)}
                                     onDelete={() => setBotToDelete(bot)}
                                     onShowCode={() => setSelectedBotForCode(bot)}
+                                    onCopyCode={() => copyToClipboard(`<script src="${import.meta.env.VITE_BACKEND_URL}/widget/widget.js" data-id="${bot._id}" defer></script>`)}
                                 />
                             ))}
                         </div>
@@ -217,7 +217,9 @@ const Agents = () => {
     );
 };
 
-const AgentCard = ({ bot, onToggle, onDelete, onShowCode }) => (
+const AgentCard = ({ bot, onToggle, onDelete, onShowCode, onCopyCode }) => {
+    const navigate = useNavigate();
+    return (
     <div className="group border border-border rounded bg-background hover:bg-surface/10 hover:border-primary/10 transition-all flex flex-col p-5 space-y-4 relative overflow-hidden">
         {/* Status indicator line */}
         <div className={`absolute top-0 left-0 w-full h-0.5 ${bot.isActive ? 'bg-primary/50' : 'bg-foreground/10'}`} />
@@ -246,11 +248,25 @@ const AgentCard = ({ bot, onToggle, onDelete, onShowCode }) => (
             </div>
             <div className="flex items-center gap-1 transition-opacity">
                 <button
+                    onClick={() => navigate(`/dashboard/studio/playground/${bot._id}`)}
+                    className={`p-1.5 rounded hover:bg-surface border border-transparent hover:border-border transition-colors text-foreground/60`}
+                    title={"Playground"}
+                >
+                    <Play size={14} />
+                </button>
+                <button
                     onClick={onShowCode}
                     className={`p-1.5 rounded hover:bg-surface border border-transparent hover:border-border transition-colors text-foreground/60`}
                     title={"code"}
                 >
                     <Code size={14} />
+                </button>
+                <button
+                    onClick={onCopyCode}
+                    className={`p-1.5 rounded hover:bg-surface border border-transparent hover:border-border transition-colors text-foreground/60`}
+                    title={"Copy code"}
+                >
+                    <Copy size={14} />
                 </button>
                 <button
                     onClick={onToggle}
@@ -313,6 +329,7 @@ const AgentCard = ({ bot, onToggle, onDelete, onShowCode }) => (
             </NavLink>
         </div>
     </div>
-);
+    );
+};
 
 export default Agents;

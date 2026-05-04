@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Lenis from 'lenis';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Bot, Inbox, MessageSquare, Zap, Command, Search, User, ChevronRight, ChevronDown } from 'lucide-react';
 import Navbar from '../../../../shared/layout/Navbar';
@@ -7,6 +8,27 @@ const Home = () => {
     const navigate = useNavigate();
 
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+    // Lenis smooth scroll
+    useEffect(() => {
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true,
+        });
+
+        let rafId;
+        const raf = (time) => {
+            lenis.raf(time);
+            rafId = requestAnimationFrame(raf);
+        };
+        rafId = requestAnimationFrame(raf);
+
+        return () => {
+            cancelAnimationFrame(rafId);
+            lenis.destroy();
+        };
+    }, []);
 
     // Track mouse for a subtle glow effect on the hero
     useEffect(() => {
@@ -65,7 +87,7 @@ const Home = () => {
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-                            <Link to="/signup" className="h-14 px-8 bg-black text-white flex items-center justify-center rounded font-medium hover:bg-black/80 hover:scale-[1.02] transition-all duration-300 shadow-2xl shadow-black/20 w-full sm:w-auto cursor-pointer">
+                            <Link to="/signup" className="h-14 px-8 bg-[#0A0A0A] text-white flex items-center justify-center rounded font-medium hover:bg-black/80 hover:scale-[1.02] transition-all duration-300 shadow-2xl shadow-black/20 w-full sm:w-auto cursor-pointer">
                                 Get Started for Free
                             </Link>
                             <button onClick={() => navigate('/login')} className="h-14 px-8 bg-white border border-black/10 text-black flex items-center justify-center rounded font-normal hover:bg-black/5 transition-colors w-full sm:w-auto sm:flex cursor-pointer">
@@ -501,15 +523,13 @@ const Home = () => {
                             </div>
                             {/* IDE Body */}
                             <div className="p-6 overflow-x-auto">
-                                <pre className="font-mono text-xs md:text-sm leading-loose">
-                                    <code className="text-white/70">
-                                        <span className="text-black/40">&lt;!-- Resolve AI Widget --&gt;</span>{'\n'}
-                                        <span className="text-blue-400">&lt;script</span>{'\n'}
-                                        {'  '}<span className="text-green-300">src</span>=<span className="text-yellow-300">"https://resolveai.morelogical.tech"</span>{'\n'}
-                                        {'  '}<span className="text-green-300">data-id</span>=<span className="text-yellow-300">"Your-Chatbot-Id"</span>{'\n'}
-                                        {'  '}<span className="text-green-300">defer</span>{'\n'}
-                                        <span className="text-blue-400">&gt;&lt;/script&gt;</span>
-                                    </code>
+                                <pre className="p-6 bg-[#0a0a0a] border border-white/10 rounded font-mono text-[13px] overflow-x-auto whitespace-pre leading-relaxed shadow-inner">
+                                    <span className="text-[#555]">{`<!-- Resolve AI Widget -->`}</span>{'\n'}
+                                    <span className="text-[#ebebeb]">&lt;</span><span className="text-[#ff6b6b]">script</span>{'\n'}
+                                    {'  '}<span className="text-[#00b5e2]">src</span><span className="text-[#ebebeb]">=</span><span className="text-[#af97ec]">"https://resolveai.morelogical.tech"</span>{'\n'}
+                                    {'  '}<span className="text-[#00b5e2]">data-id</span><span className="text-[#ebebeb]">=</span><span className="text-[#af97ec]">"Your-Chatbot-Id"</span>{'\n'}
+                                    {'  '}<span className="text-[#00b5e2]">defer</span>{'\n'}
+                                    <span className="text-[#ebebeb]">&gt;&lt;/</span><span className="text-[#ff6b6b]">script</span><span className="text-[#ebebeb]">&gt;</span>
                                 </pre>
                             </div>
                         </div>

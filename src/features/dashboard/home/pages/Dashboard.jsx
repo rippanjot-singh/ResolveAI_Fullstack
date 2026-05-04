@@ -130,7 +130,7 @@ const Dashboard = () => {
                     {/* Main Content Grid */}
                     <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
                         <NeedsAttention tickets={recentTickets} />
-                        <SystemIntelligence activeChatbots={activeChatbots} />
+                        <SystemIntelligence activeChatbots={activeChatbots} kpis={kpis} />
                     </div>
                 </div>
             </main>

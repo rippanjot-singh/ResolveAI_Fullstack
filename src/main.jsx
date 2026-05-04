@@ -9,6 +9,12 @@ import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { SocketProvider } from './context/SocketContext.jsx'
 
+// src/index.js
+if (import.meta.env.MODE === 'production') {
+  console.log = () => {};
+  console.warn = () => {};
+}
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>

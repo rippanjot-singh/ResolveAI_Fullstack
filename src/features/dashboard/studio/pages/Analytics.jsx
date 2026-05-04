@@ -286,19 +286,36 @@ const Analytics = () => {
                             </div>
                         </div>
 
-                        {/* Recent Highlights / Insights */}
-                        <div className="bg-surface/10 border border-border border-dashed rounded p-8 flex flex-col items-center text-center space-y-4">
-                            <div className="w-12 h-12 rounded bg-surface border border-border flex items-center justify-center">
-                                <Info size={24} className="text-primary/60" />
-                            </div>
-                            <div>
-                                <h4 className="text-sm font-bold">Smart Insights</h4>
-                                <p className="text-xs text-foreground/40 max-w-md mt-1">
-                                    Your AI is successfully resolving 84% of queries without human intervention. 
-                                    Positive sentiment has increased by 5% compared to the previous period.
-                                </p>
-                            </div>
-                        </div>
+                        {/* Smart Insights — derived from real data only */}
+                        {(() => {
+                            const rate = data.stats.resolutionRate ?? null;
+                            const totalSentiment = data.sentimentDistribution.reduce((s, i) => s + i.value, 0);
+                            const positive = data.sentimentDistribution.find(i => i.name === 'positive')?.value ?? 0;
+                            const positivePct = totalSentiment > 0 ? Math.round((positive / totalSentiment) * 100) : null;
+                            const hasData = data.stats.totalChats > 0;
+
+                            if (!hasData) return null;
+
+                            const insights = [];
+                            if (rate !== null) insights.push(`AI is resolving ${rate}% of queries without human intervention.`);
+                            if (positivePct !== null) insights.push(`${positivePct}% of conversations have positive sentiment (${positive} of ${totalSentiment} total).`);
+
+                            if (insights.length === 0) return null;
+
+                            return (
+                                <div className="bg-surface/10 border border-border border-dashed rounded p-8 flex flex-col items-center text-center space-y-4">
+                                    <div className="w-12 h-12 rounded bg-surface border border-border flex items-center justify-center">
+                                        <Info size={24} className="text-primary/60" />
+                                    </div>
+                                    <div>
+                                        <h4 className="text-sm font-bold">Smart Insights</h4>
+                                        <p className="text-xs text-foreground/40 max-w-md mt-1">
+                                            {insights.join(' ')}
+                                        </p>
+                                    </div>
+                                </div>
+                            );
+                        })()}
                     </div>
                 </div>
             </main>
