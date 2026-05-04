@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Lenis from 'lenis';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, Bot, Inbox, MessageSquare, Zap, Command, Search, User, ChevronRight, ChevronDown } from 'lucide-react';
+import { ArrowRight, Bot, Inbox, MessageSquare, Zap, Command, Search, User, ChevronRight, ChevronDown, Mail } from 'lucide-react';
 import Navbar from '../../../../shared/layout/Navbar';
 import { useAuth } from '../../../auth/hooks/useAuth';
 
@@ -402,23 +402,85 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* METRICS SECTION */}
-            <section className="py-20 lg:py-24 border-y border-black/5 bg-[#F9F9F9]">
-                <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12">
-                    {[
-                        { label: 'Time to Value', value: 'Minutes' },
-                        { label: 'Deflection Rate', value: '65%' },
-                        { label: 'Platform Uptime', value: '99.9%' },
-                        { label: 'Support UX', value: '10/10' },
-                    ].map((metric, i) => (
-                        <div key={i} className="flex flex-col gap-2">
-                            <div className="h-px w-8 bg-black/20" />
-                            <span className="text-3xl md:text-5xl font-display font-light text-black tracking-tight">{metric.value}</span>
-                            <span className="text-[10px] lg:text-sm font-light text-black/50 uppercase tracking-widest">{metric.label}</span>
+            {/* EMAIL INTEGRATION SECTION */}
+            <section className="py-24 lg:py-32 bg-[#F9F9F9] overflow-hidden">
+                <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 text-[10px] font-bold uppercase tracking-wider mb-6">
+                            <Mail className="w-3 h-3" />
+                            <span>Omnichannel Support</span>
                         </div>
-                    ))}
+                        <h2 className="text-3xl md:text-5xl font-light tracking-tight text-black mb-6 leading-[1.1]">
+                            Connect your custom email.<br />AI takes care of the rest.
+                        </h2>
+                        <p className="text-black/60 font-light text-lg mb-8 leading-relaxed max-w-xl">
+                            Stop switching between tabs. Link your support@yourdomain.com via IMAP and let ResolveAI draft replies, categorize inquiries, and resolve tickets directly from your own email address.
+                        </p>
+                        <div className="space-y-4">
+                            {[
+                                "Native IMAP/SMTP integration",
+                                "AI-powered draft suggestions",
+                                "Automatic ticket categorization",
+                                "Sentiment-based prioritization"
+                            ].map((feature, i) => (
+                                <div key={i} className="flex items-center gap-3">
+                                    <div className="w-5 h-5 rounded-full bg-black/5 flex items-center justify-center text-black">
+                                        <ChevronRight className="w-3 h-3" />
+                                    </div>
+                                    <span className="text-sm font-medium text-black/80">{feature}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="relative">
+                        {/* Email Mockup Visual */}
+                        <div className="bg-white rounded border border-black/10 shadow-2xl overflow-hidden transform lg:rotate-2 group-hover:rotate-0 transition-transform duration-700">
+                            <div className="h-10 bg-black/5 border-b border-black/10 flex items-center px-4 justify-between">
+                                <div className="flex gap-1.5">
+                                    <div className="w-2.5 h-2.5 rounded-full bg-black/10" />
+                                    <div className="w-2.5 h-2.5 rounded-full bg-black/10" />
+                                    <div className="w-2.5 h-2.5 rounded-full bg-black/10" />
+                                </div>
+                                <div className="text-[10px] font-medium text-black/40">support@yourcompany.com</div>
+                                <div className="w-4 h-4" />
+                            </div>
+                            <div className="p-6 space-y-6">
+                                <div className="space-y-2">
+                                    <div className="flex items-center justify-between">
+                                        <div className="text-xs font-bold text-black">Refund Request</div>
+                                        <div className="text-[10px] text-black/40">2m ago</div>
+                                    </div>
+                                    <div className="text-xs text-black/60 line-clamp-2 leading-relaxed">
+                                        "Hi, I'd like to request a refund for my last order #4421. The item arrived damaged..."
+                                    </div>
+                                </div>
+                                <div className="h-px bg-black/5" />
+                                <div className="space-y-3 animate-pulse">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-5 h-5 rounded bg-black text-white flex items-center justify-center text-[8px] font-bold">R</div>
+                                        <div className="text-[10px] font-bold text-black">ResolveAI <span className="font-normal text-black/40">Drafting...</span></div>
+                                    </div>
+                                    <div className="bg-primary/5 rounded p-4 border border-primary/10">
+                                        <div className="text-[11px] text-black/80 leading-relaxed italic">
+                                            "Hello! I'm so sorry to hear about the damage. I've initiated a full refund for order #4421 and sent a return label to your email. Is there anything else I can help with?"
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* Floating elements */}
+                        <div className="absolute -top-6 -right-6 w-32 bg-white rounded border border-black/10 shadow-xl p-3 z-10 -rotate-3">
+                            <div className="flex items-center gap-2 mb-2">
+                                <div className="w-2 h-2 rounded-full bg-green-500" />
+                                <div className="text-[10px] font-bold">Auto-Resolved</div>
+                            </div>
+                            <div className="h-1 bg-black/5 rounded w-full" />
+                        </div>
+                    </div>
                 </div>
             </section>
+            
 
             {/* CTA SECTION */}
             <section className="py-24 lg:py-40 px-6 max-w-4xl mx-auto text-center">

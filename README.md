@@ -4263,4 +4263,3 @@ This file is a critical piece of the application. It operates as a logical modul
 
 ### Performance Tuning
 - **Vite Build Process**: The production build uses Rollup under the hood, chunking vendor files and aggressively tree-shaking unused code.
-- **Memoization**: While not explicitly listed in every file, React's rendering lifecycle is optimized by standard practices, ensuring components only render when props or state meaningfully change.
